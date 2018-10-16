@@ -1,0 +1,21 @@
+page {
+  background-color: #e6e8ed;
+}
+
+.coache-view {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 30rpx;
+}
+
+.coache-view text {
+  margin-left: 10rpx;
+  font-size: 40rpx;
+}
+
+.radio-group radio {
+  margin-left: 20rpx;
+  font-size: 30rpx;
+}

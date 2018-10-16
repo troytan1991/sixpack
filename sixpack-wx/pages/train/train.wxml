@@ -1,0 +1,3 @@
+<video id="videoId" src="{{currentVideo}}" controls="true" loop bindtimeupdate	="onUpdate"></video>
+
+<button type='primary' bindtap='onBtnTap'>播放</button>

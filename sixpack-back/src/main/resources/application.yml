@@ -1,0 +1,61 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    initial-size: 5
+    max-active: 20
+  http.multipart:
+    max-file-size: 1Mb  
+    max-request-size: 1Mb
+  cache:
+    cache-names: session
+    
+pagehelper:
+  autoDialect: true
+  closeConn: true
+  pageSizeZero: true
+
+mybatis:
+    mapper-locations: classpath:mapper/*.xml
+  
+server:
+  session.timeout: 900
+  context-path: /sixpack/rest
+  port: 8080
+  
+wx:
+  appId: wx82e15243c0d5889b
+  appSecret: 2cff4288521a0f5420d6551097cd5af6
+  oauthUrl: https://api.weixin.qq.com/sns/jscode2session
+  
+
+
+---
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sixpack?useSSL=false
+    username: sixpack
+    password: 2wsx#EDC
+   
+---
+spring:
+  profiles: qa
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sixpack?useSSL=false
+    username: sixpack
+    password: 2wsx#EDC
+server:
+  port: 8081
+   
+---
+spring:
+  profiles: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sixpack?useSSL=false
+    username: sixpack
+    password: 2wsx#EDC
+    

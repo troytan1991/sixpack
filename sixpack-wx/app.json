@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/train/train",
+    "pages/main/main",
+    "pages/video/video",
+    "pages/plan/plan",
+    "pages/aboutme/aboutme",
+    "pages/setting/setting"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0eaaed",
+    "navigationBarTitleText": "腹肌训练",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#e6e8ed"
+  },
+  "tabBar": {
+    "color": "#878686",
+    "selectedColor": "#0eaaed",
+    "list": [
+      {
+        "pagePath": "pages/main/main",
+        "text": "练习",
+        "iconPath": "/asset/icon/video.png",
+        "selectedIconPath": "/asset/icon/videoHL.png"
+      },
+      {
+        "pagePath": "pages/plan/plan",
+        "text": "计划",
+        "iconPath": "/asset/icon/plan.png",
+        "selectedIconPath": "/asset/icon/planHL.png"
+      },
+      {
+        "pagePath": "pages/aboutme/aboutme",
+        "text": "我的",
+        "iconPath": "/asset/icon/aboutme.png",
+        "selectedIconPath": "/asset/icon/aboutmeHL.png"
+      }
+    ]
+  }
+}

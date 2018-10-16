@@ -1,0 +1,28 @@
+<view class="mark-line header-view">
+  {{level}}
+</view>
+<scroll-view class='wrap-scroll' style='height:{{scrollHeight}}px' scroll-y bindscroll="onWrapScroll">
+  <view class="video-container">
+    <form class='img-box' report-submit bindsubmit='onVideoTap' data-id="{{item.videoRcId}}" wx:for="{{easyVideos}}" wx:key="item">
+      <view class='video-title'>{{item.chnName}}</view>
+      <image src='{{item.thumbnailUrl}}' />
+      <button class='submit-btn' form-type='submit'></button>
+    </form>
+  </view>
+  <view id='mid-line' class='mark-line middle'>一般</view>
+  <view class="video-container">
+    <form class='img-box' report-submit bindsubmit='onVideoTap' data-id="{{item.videoRcId}}" wx:for="{{midVideos}}" wx:key="item">
+      <view class='video-title'>{{item.chnName}}</view>
+      <image src='{{item.thumbnailUrl}}' />
+      <button class='submit-btn' form-type='submit'></button>
+    </form>
+  </view>
+  <view id='hard-line' class='mark-line middle'>困难</view>
+  <view class="video-container">
+    <form class='img-box' report-submit bindsubmit='onVideoTap' data-id="{{item.videoRcId}}" wx:for="{{hardVideos}}" wx:key="item">
+      <view class='video-title'>{{item.chnName}}</view>
+      <image src='{{item.thumbnailUrl}}' />
+      <button class='submit-btn' form-type='submit'></button>
+    </form>
+  </view>
+</scroll-view>

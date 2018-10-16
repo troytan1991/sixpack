@@ -1,0 +1,31 @@
+<video id="videoId" class="main-video" src='{{video.videoUrl}}' controls='' show-play-btn='' autoplay loop enable-progress-gesture=''></video>
+<scroll-view class='analysis-scroll' scroll-y style='height:{{scrollHeight}}px'>
+  <view class='scroll-item'>
+    <text class='item-title'>目标肌肉</text>
+    <view class='line'></view>
+    <view class='item-content'>
+      {{video.trainMuscle}}
+    </view>
+  </view>
+  <view class='scroll-item'>
+    <text class='item-title'>起始动作</text>
+    <view class='line'></view>
+    <view class='item-content'>
+      {{video.startAction}}
+    </view>
+  </view>
+  <view class='scroll-item'>
+    <text class='item-title'>动作要领</text>
+    <view class='line'></view>
+    <view class='item-content'>
+      {{video.essenExercise}}
+    </view>
+  </view>
+  <view class='scroll-item'>
+    <text class='item-title'>温馨提示</text>
+    <view class='line'></view>
+    <view class='item-content'>
+      {{video.remind}}
+    </view>
+  </view>
+</scroll-view>

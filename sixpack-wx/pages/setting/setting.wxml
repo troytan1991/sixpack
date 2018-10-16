@@ -1,0 +1,7 @@
+<view class="coache-view">
+  <text>选择教练：</text>
+  <radio-group class="radio-group" bindchange="radioChange">
+    <radio value='1' checked="{{prefer==1?'true':''}}">帅哥</radio>
+    <radio value='2' checked="{{prefer==2?'true':''}}">美女</radio>
+  </radio-group>
+</view>
