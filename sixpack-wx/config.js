@@ -1,6 +1,6 @@
-var root = "https://troytan1991.club/sixpack/rest"; //prod
+// var root = "https://troytan.club/sixpack/rest"; //prod
 // var root = "http://106.14.134.6:8081/sixpack/rest"; //qa
-// var root = "http://localhost:8080/sixpack/rest"; //dev
+var root = "http://localhost:8080/sixpack/rest"; //dev
 var config = {
   loginUrl: `${root}/user/login`,
   updateUserUrl: `${root}/user`,
