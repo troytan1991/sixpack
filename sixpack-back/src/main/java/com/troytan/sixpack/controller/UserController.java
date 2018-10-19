@@ -53,6 +53,22 @@ public class UserController {
         return userService.logUser(oauthDto);
     }
 
+    /**
+     * vote小程序登录入口
+     *
+     * @author troytan
+     * @date 2018年10月18日
+     * @param code
+     * @return
+     */
+    @PutMapping("/votelogin")
+    @NoAuth
+    public String getVoteSessionId(@RequestParam("code") String code) {
+        OauthDto oauthDto = wechatManager.requestVoteOauth(code);
+
+        return userService.logUser(oauthDto);
+    }
+
     @GetMapping("/check")
     @NoAuth
     public UserSessionDto checkSession(@RequestParam("sessionId") String sessionId) {
