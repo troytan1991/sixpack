@@ -64,4 +64,6 @@ public interface UserMapper {
     void updatePreferByUserId(@Param("userId") Integer currentUser, @Param("prefer") Short gender);
 
     User selectByOpenId(String openid);
+
+    void updateBySelective(User user);
 }

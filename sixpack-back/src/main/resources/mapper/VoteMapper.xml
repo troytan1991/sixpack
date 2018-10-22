@@ -75,10 +75,10 @@
 	from tt_vote 
 	where SUBJECT_ID=#{subjectId, jdbcType=INTEGER}
   </select>
-  <select id="listByUserId" parameterType="Integer" resultMap="BaseResultMap">
-    SELECT * FROM tt_vote_subject 
-    where CREATE_BY=#{userId, jdbcType=INTEGER} 
-        and STATUS=1
-  </select>
+  <delete id="deleteByUserAndSubjectId">
+    delete from tt_vote
+    where USER_ID=#{userId, jdbcType=INTEGER}
+     and SUBJECT_ID=#{subjectId, jdbcType=INTEGER}
+  </delete>
   
 </mapper>

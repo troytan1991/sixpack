@@ -1,7 +1,5 @@
 package com.troytan.sixpack.service;
 
-import java.util.List;
-
 import com.troytan.sixpack.domain.VoteSubject;
 import com.troytan.sixpack.dto.VoteResult;
 
@@ -11,11 +9,13 @@ public interface VoteService {
 
     VoteResult getVoteResult(Integer subjectId);
 
-    int createSubject(VoteSubject subject);
+    // int createSubject(VoteSubject subject);
 
     VoteSubject getSubject(Integer subjectId);
 
-    List<VoteSubject> listSendSubject();
+    // List<VoteSubject> listSendSubject();
 
-    List<VoteSubject> listPaticipateSubject();
+    // List<VoteSubject> listPaticipateSubject();
+
+    // void deleteSubject(Integer subjectId);
 }

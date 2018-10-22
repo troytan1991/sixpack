@@ -95,4 +95,27 @@
     from tm_user
     where open_id = #{openId,jdbcType=VARCHAR}
   </select>
+  <!-- 更新用户信息 -->
+  <update id="updateBySelective" parameterType="com.troytan.sixpack.domain.User">
+    update tm_user
+    set
+    <if test="openId != null">
+        OPEN_ID = #{openId,jdbcType=VARCHAR},
+    </if>
+    <if test="avatarUrl != null">
+        AVATAR_URL = #{avatarUrl,jdbcType=VARCHAR},
+    </if>
+    <if test="nickname != null">
+        NICKNAME = #{nickname,jdbcType=VARCHAR},
+    </if>
+    <if test="province != null">
+        PROVINCE = #{province,jdbcType=VARCHAR},
+    </if>
+    <if test="gender != null">
+        GENDER = #{gender,jdbcType=DECIMAL},
+    </if>
+    UPDATE_BY = #{updateBy,jdbcType=INTEGER},
+    UPDATE_ON = now()
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </update>
 </mapper>

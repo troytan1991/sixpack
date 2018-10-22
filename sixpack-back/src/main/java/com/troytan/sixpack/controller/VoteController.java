@@ -3,6 +3,7 @@ package com.troytan.sixpack.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,13 +32,25 @@ public class VoteController {
      * @param subject
      * @return
      */
-    @PostMapping("/subject")
-    public int createSubject(@RequestBody VoteSubject subject) {
-        return voteService.createSubject(subject);
-    }
+    // @PostMapping("/subject")
+    // public int createSubject(@RequestBody VoteSubject subject) {
+    // return voteService.createSubject(subject);
+    // }
 
     /**
-     * 获取主题
+     * 删除主题
+     *
+     * @author troytan
+     * @date 2018年10月19日
+     * @param subjectId
+     */
+    // @DeleteMapping("/subject/{subjectId}")
+    // public void deleteSubject(@PathVariable("subjectId") Integer subjectId) {
+    // voteService.deleteSubject(subjectId);
+    // }
+
+    /**
+     * 获取主题与个人投票信息
      *
      * @author troytan
      * @date 2018年10月18日
@@ -56,10 +69,10 @@ public class VoteController {
      * @date 2018年10月19日
      * @return
      */
-    @GetMapping("/send/subjects")
-    public List<VoteSubject> getSendSubjects() {
-        return voteService.listSendSubject();
-    }
+    // @GetMapping("/send/subjects")
+    // public List<VoteSubject> getSendSubjects() {
+    // return voteService.listSendSubject();
+    // }
 
     /**
      * 获取参与列表
@@ -68,10 +81,10 @@ public class VoteController {
      * @date 2018年10月19日
      * @return
      */
-    @GetMapping("/participate/subjects")
-    public List<VoteSubject> getParticipateSubject() {
-        return voteService.listPaticipateSubject();
-    }
+    // @GetMapping("/participate/subjects")
+    // public List<VoteSubject> getParticipateSubject() {
+    // return voteService.listPaticipateSubject();
+    // }
 
     /**
      * 投票

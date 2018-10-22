@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.troytan.sixpack.aspect.NoAuth;
+import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.OauthDto;
+import com.troytan.sixpack.dto.UserDto;
 import com.troytan.sixpack.dto.UserSessionDto;
 import com.troytan.sixpack.manager.WechatManager;
 import com.troytan.sixpack.service.NotifyService;
@@ -30,12 +32,7 @@ public class UserController {
     @Autowired
     private NotifyService notifyService;
 
-    @GetMapping("/persist")
-    @NoAuth
-    public String cachePersist() {
-        return "persist success";
-    }
-
+    /*************** 健身小程序相关 ***************/
     /**
      * 用户登录
      *
@@ -49,22 +46,6 @@ public class UserController {
     @NoAuth
     public String getSessionId(@RequestParam("code") String code) {
         OauthDto oauthDto = wechatManager.requestOauth(code);
-
-        return userService.logUser(oauthDto);
-    }
-
-    /**
-     * vote小程序登录入口
-     *
-     * @author troytan
-     * @date 2018年10月18日
-     * @param code
-     * @return
-     */
-    @PutMapping("/votelogin")
-    @NoAuth
-    public String getVoteSessionId(@RequestParam("code") String code) {
-        OauthDto oauthDto = wechatManager.requestVoteOauth(code);
 
         return userService.logUser(oauthDto);
     }
@@ -125,6 +106,51 @@ public class UserController {
     @PostMapping("/form")
     public void saveFormIds(@RequestBody List<String> formIds) {
         notifyService.uploadFormIds(formIds);
+    }
+
+    /************* 投票小程序相关 ****************/
+
+    /**
+     * vote小程序登录入口
+     *
+     * @author troytan
+     * @date 2018年10月18日
+     * @param code
+     * @return
+     */
+    @PutMapping("/votelogin")
+    @NoAuth
+    public String getVoteSessionId(@RequestParam("code") String code) {
+        OauthDto oauthDto = wechatManager.requestVoteOauth(code);
+
+        return userService.logUser(oauthDto);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @author troytan
+     * @date 2018年7月11日
+     * @param userDto
+     */
+    @PostMapping
+    public void updateUser(@RequestBody UserDto userDto) {
+        userService.updateUser(userDto);
+    }
+
+    /**
+     * 记录群组信息
+     *
+     * @author troytan
+     * @date 2018年7月10日
+     * @param groupDto
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/group")
+    public String registerGroup(@RequestBody GroupDto groupDto) throws Exception {
+
+        return userService.registerGroup(groupDto);
     }
 
 }

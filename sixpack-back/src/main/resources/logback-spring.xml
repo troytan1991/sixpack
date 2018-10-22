@@ -57,7 +57,7 @@
         </encoder>
     </appender>
 
-	<logger name="com.troytan.notify" level="DEBUG" />
+	<logger name="com.troytan.sixpack" level="DEBUG" />
 
 	<!-- root -->
 	<root level="INFO">

@@ -8,10 +8,19 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.troytan.sixpack.domain.GroupUser;
 import com.troytan.sixpack.domain.User;
+import com.troytan.sixpack.domain.VoteSubject;
+import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.OauthDto;
+import com.troytan.sixpack.dto.UserDto;
 import com.troytan.sixpack.dto.UserSessionDto;
+import com.troytan.sixpack.repository.GroupUserMapper;
 import com.troytan.sixpack.repository.UserMapper;
+import com.troytan.sixpack.repository.VoteSubjectMapper;
+import com.troytan.sixpack.util.AESUtils;
 import com.troytan.sixpack.util.SHAUtils;
 
 @Service
@@ -24,6 +33,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper                  userMapper;
     @Autowired
     private UserService                 userService;
+    @Autowired
+    private VoteSubjectMapper           subjectMapper;
+    @Autowired
+    private GroupUserMapper             groupUserMapper;
 
     /**
      * 记录用户认证信息
@@ -141,4 +154,66 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /**
+     * 更新用户信息
+     *
+     * @author troytan
+     * @date 2018年10月22日
+     * @param userDto (non-Javadoc)
+     * @see com.troytan.sixpack.service.UserService#updateUser(com.troytan.sixpack.dto.UserDto)
+     */
+    @Override
+    @Transactional
+    public void updateUser(UserDto userDto) {
+        User user = new User();
+        user.setUserId(getCurrentUser());
+        user.setAvatarUrl(userDto.getAvatarUrl());
+        user.setGender(userDto.getGender());
+        user.setNickname(userDto.getNickName());
+        user.setProvince(userDto.getProvince());
+        user.setUpdateBy(getCurrentUser());
+
+        userMapper.updateBySelective(user);
+    }
+
+    /**
+     * 关联群组信息
+     *
+     * @author troytan
+     * @date 2018年10月22日
+     * @param groupDto
+     * @return
+     * @throws Exception (non-Javadoc)
+     * @see com.troytan.sixpack.service.UserService#registerGroup(com.troytan.sixpack.dto.GroupDto)
+     */
+    @Override
+    @Transactional
+    public String registerGroup(GroupDto groupDto) throws Exception {
+        UserSessionDto sessionDto = userHolder.get();
+        Integer userId = userService.getCurrentUser();
+        // 解密群ID
+        String result = AESUtils.decrypt(groupDto.getEncryptedData(), groupDto.getIv(), sessionDto.getSessionKey());
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(result);
+        String groupId = jsonObject.get("openGId").getAsString();
+
+        // 进行主题-群ID关联
+        VoteSubject dbSubject = subjectMapper.selectByPrimaryKey(groupDto.getSubjectId());
+        if (dbSubject.getGroupId() == null) {
+            dbSubject.setGroupId(groupId);
+            dbSubject.setUpdateBy(userId);
+            subjectMapper.updateByPrimaryKey(dbSubject);
+        }
+
+        // 群--用户关联
+        GroupUser groupUser = groupUserMapper.selectByGroupAndOpenId(groupId, sessionDto.getOpenId());
+        if (groupUser == null) {
+            groupUser = new GroupUser();
+            groupUser.setGroupId(groupId);
+            groupUser.setOpenId(sessionDto.getOpenId());
+            groupUser.setCreateBy(userId);
+            groupUserMapper.insert(groupUser);
+        }
+
+        return groupId;
+    }
 }

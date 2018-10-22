@@ -1,7 +1,5 @@
 package com.troytan.sixpack.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +30,14 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public void voteSubject(Integer subjectId, Short value) {
+        Integer userId = userService.getCurrentUser();
+        // voteMapper.deleteByUserAndSubjectId(userId, subjectId);
+
         Vote vote = new Vote();
         vote.setSubjectId(subjectId);
-        vote.setUserId(userService.getCurrentUser());
+        vote.setUserId(userId);
         vote.setValue(value);
-        vote.setCreateBy(userService.getCurrentUser());
-
+        vote.setCreateBy(userId);
         voteMapper.insert(vote);
     }
 
@@ -65,14 +65,17 @@ public class VoteServiceImpl implements VoteService {
      * @return (non-Javadoc)
      * @see com.troytan.sixpack.service.VoteService#createSubject(com.troytan.sixpack.domain.VoteSubject)
      */
-    @Override
-    public int createSubject(VoteSubject subject) {
-        subject.setCreateBy(userService.getCurrentUser());
-        voteSubjectMapper.insert(subject);
-        return subject.getSubjectId();
-    }
+    // @Override
+    // public int createSubject(VoteSubject subject) {
+    // subject.setCreateBy(userService.getCurrentUser());
+    // subject.setStatus((short) 1);
+    // voteSubjectMapper.insert(subject);
+    // return subject.getSubjectId();
+    // }
 
     /**
+     * 获取主题,为空则表示无权限访问
+     * 
      * @author troytan
      * @date 2018年10月18日
      * @param subjectId
@@ -85,16 +88,29 @@ public class VoteServiceImpl implements VoteService {
         return voteSubjectMapper.getSubjectDto(subjectId, userService.getCurrentUser());
     }
 
-    @Override
-    public List<VoteSubject> listSendSubject() {
-        
-        return voteMapper.listByUserId(userService.getCurrentUser());
-    }
+    // @Override
+    // public List<VoteSubject> listSendSubject() {
+    //
+    // return voteSubjectMapper.listByUserId(userService.getCurrentUser());
+    // }
 
-    @Override
-    public List<VoteSubject> listPaticipateSubject() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    // @Override
+    // public List<VoteSubject> listPaticipateSubject() {
+    // // TODO Auto-generated method stub
+    // return null;
+    // }
+
+    /**
+     * 删除主题
+     *
+     * @author troytan
+     * @date 2018年10月19日
+     * @param subjectId (non-Javadoc)
+     * @see com.troytan.sixpack.service.VoteService#deleteSubject(java.lang.Integer)
+     */
+    // @Override
+    // public void deleteSubject(Integer subjectId) {
+    // voteSubjectMapper.deleteByUserAndId(subjectId, userService.getCurrentUser());
+    // }
 
 }
