@@ -73,7 +73,7 @@ public class VoteSubject {
      *
      * @mbg.generated
      */
-    private Byte anonymous;
+    private Boolean anonymous;
 
     /**
      *
@@ -323,7 +323,7 @@ public class VoteSubject {
      *
      * @mbg.generated
      */
-    public Byte getAnonymous() {
+    public Boolean getAnonymous() {
         return anonymous;
     }
 
@@ -335,7 +335,7 @@ public class VoteSubject {
      *
      * @mbg.generated
      */
-    public void setAnonymous(Byte anonymous) {
+    public void setAnonymous(Boolean anonymous) {
         this.anonymous = anonymous;
     }
 

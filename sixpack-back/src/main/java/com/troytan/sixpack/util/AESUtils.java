@@ -37,8 +37,18 @@ public class AESUtils {
         params.init(new IvParameterSpec(ivBytes));
         Security.addProvider(new BouncyCastleProvider());
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
+
         cipher.init(Cipher.DECRYPT_MODE, keySpec, params);
         return new String(cipher.doFinal(contentBytes), "utf-8");
+    }
+
+    public static void main(String[] args) throws Exception {
+         String sessionKey ="VHQ5myeI80LrSz4pEPixrw==";
+         String encryptedData=
+         "cy7BkSSfMC6ZqTIC/JmDAmJFCaavcT8d6DuscOQdci+CqY6Cidl6FM622zua3oubDxHxHHDi/k2PVA06UNmB2DoD262IJ9d0TKtqOh53drK9d1eJAS6LBz9jr8R/Wl7Yn6rStQRcKI3j5limFi7KNg==";
+         String iv= "0UF5ABuTzWboP12o1xH+zA==";
+        
+         System.out.println(decrypt(encryptedData, iv, sessionKey));
     }
 
 }

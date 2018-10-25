@@ -13,7 +13,7 @@
     <result column="SIDE2" jdbcType="VARCHAR" property="side2" />
     <result column="SIDE3" jdbcType="VARCHAR" property="side3" />
     <result column="SIDE4" jdbcType="VARCHAR" property="side4" />
-    <result column="ANONYMOUS" jdbcType="TINYINT" property="anonymous" />
+    <result column="ANONYMOUS" jdbcType="BIT" property="anonymous" />
     <result column="GROUP_ID" jdbcType="VARCHAR" property="groupId" />
     <result column="TOTAL_NUM" jdbcType="INTEGER" property="totalNum" />
     <result column="UNIT_PRICE" jdbcType="INTEGER" property="unitPrice" />
@@ -47,7 +47,7 @@
       )
     values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{side1,jdbcType=VARCHAR}, 
       #{side2,jdbcType=VARCHAR}, #{side3,jdbcType=VARCHAR}, #{side4,jdbcType=VARCHAR}, 
-      #{anonymous,jdbcType=TINYINT}, #{groupId,jdbcType=VARCHAR}, #{totalNum,jdbcType=INTEGER}, 
+      #{anonymous,jdbcType=BIT}, #{groupId,jdbcType=VARCHAR}, #{totalNum,jdbcType=INTEGER}, 
       #{unitPrice,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT}, #{createBy,jdbcType=INTEGER}, 
       #{createOn,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateOn,jdbcType=TIMESTAMP}
       )
@@ -64,7 +64,7 @@
       SIDE2 = #{side2,jdbcType=VARCHAR},
       SIDE3 = #{side3,jdbcType=VARCHAR},
       SIDE4 = #{side4,jdbcType=VARCHAR},
-      ANONYMOUS = #{anonymous,jdbcType=TINYINT},
+      ANONYMOUS = #{anonymous,jdbcType=BIT},
       GROUP_ID = #{groupId,jdbcType=VARCHAR},
       TOTAL_NUM = #{totalNum,jdbcType=INTEGER},
       UNIT_PRICE = #{unitPrice,jdbcType=INTEGER},

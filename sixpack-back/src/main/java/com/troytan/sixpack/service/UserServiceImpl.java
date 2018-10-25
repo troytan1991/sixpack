@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         String shaKey = null;
         try {
             shaKey = SHAUtils.getSha1(oauthDto.getOpenid() + oauthDto.getSession_key());
-            userService.putSession(shaKey, new UserSessionDto(user.getUserId(), user.getOpenId(), shaKey));
+            userService.putSession(shaKey, new UserSessionDto(user.getUserId(), user.getOpenId(), oauthDto.getSession_key()));
         } catch (NoSuchAlgorithmException e) {
 
         }

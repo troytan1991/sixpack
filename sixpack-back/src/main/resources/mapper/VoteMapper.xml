@@ -64,21 +64,28 @@
     select VOTE_ID, VALUE, USER_ID, SUBJECT_ID, CREATE_BY, CREATE_ON
     from tt_vote
   </select>
-  
-  <resultMap id="VoteResultMap" type="com.troytan.sixpack.dto.VoteResult">
-     <result column="OBVERSE_COUNT" jdbcType="INTEGER" property="obverseCount" />
-     <result column="REVERSE_COUNT" jdbcType="INTEGER" property="reverseCount" />
-  </resultMap>
-  <select id="getVoteResult" parameterType="Integer" resultMap="VoteResultMap">
-    select sum(case value when 1 then 1 else 0 end) as OBVERSE_COUNT,
-	   sum(case value when 2 then 1 else 0 end) as REVERSE_COUNT
-	from tt_vote 
-	where SUBJECT_ID=#{subjectId, jdbcType=INTEGER}
+  <!-- by troytan:匿名投票结果 -->
+  <select id="getVoteResultWithOutUser" parameterType="Integer" resultType="com.troytan.sixpack.dto.AnonymousVoteResult">
+    select sum(case value when 1 then 1 else 0 end) as group1Count,
+       sum(case value when 2 then 1 else 0 end) as group2Count,
+       sum(case value when 3 then 1 else 0 end) as group3Count,
+       sum(case value when 4 then 1 else 0 end) as group4Count
+    from tt_vote 
+    where SUBJECT_ID=#{subjectId, jdbcType=INTEGER}  
   </select>
-  <delete id="deleteByUserAndSubjectId">
-    delete from tt_vote
-    where USER_ID=#{userId, jdbcType=INTEGER}
-     and SUBJECT_ID=#{subjectId, jdbcType=INTEGER}
-  </delete>
-  
+  <!-- by troytan:实名投票结果 -->
+  <resultMap id="RealVoteResultMap" type="com.troytan.sixpack.dto.RealVoteResult">
+    <result column="VALUE" jdbcType="SMALLINT" property="value" />
+    <collection ofType="com.troytan.sixpack.domain.User" property="users">
+        <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+        <result column="AVATAR_URL" jdbcType="VARCHAR" property="avatarUrl" />
+        <result column="NICKNAME" jdbcType="VARCHAR" property="nickname" />
+    </collection>
+  </resultMap>
+  <select id="getVoteResultWithUser" parameterType="Integer" resultMap="RealVoteResultMap">
+    select  vote.VALUE, vote.USER_ID,user.AVATAR_URL,user.NICKNAME
+    from  tt_vote vote
+    left join tm_user user on user.USER_ID=vote.USER_ID
+    where SUBJECT_ID=#{subjectId, jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -31,7 +31,7 @@
     insert into tt_group_user (GROUP_ID, OPEN_ID, CREATE_BY, 
       CREATE_ON)
     values (#{groupId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}, 
-      #{createOn,jdbcType=TIMESTAMP})
+      now())
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.troytan.sixpack.domain.GroupUser">
     <!--
