@@ -14,7 +14,6 @@ import com.troytan.sixpack.domain.VoteSubject;
 import com.troytan.sixpack.dto.VoteResult;
 import com.troytan.sixpack.service.VoteService;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping(path = "/vote", produces = "application/json;charset=UTF-8")
 public class VoteController {
@@ -55,7 +54,7 @@ public class VoteController {
      * @param subjectId
      * @return
      */
-    @GetMapping("/subject/{subjectId}")
+    @GetMapping("/{subjectId}")
     public VoteSubject getSubject(@PathVariable("subjectId") Integer subjectId) {
         return voteService.getSubject(subjectId);
     }
@@ -105,6 +104,7 @@ public class VoteController {
      * @param subjectId
      * @return
      */
+    @CrossOrigin("*")
     @NoAuth
     @GetMapping("/result/{subjectId}")
     public VoteResult getVoteResult(@PathVariable("subjectId") Integer subjectId) {

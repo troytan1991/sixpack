@@ -18,10 +18,10 @@
 		<javaClientGenerator targetPackage="com.troytan.sixpack.repository"
 			type="XMLMAPPER" targetProject="src/main/java" />
 
-<!-- 		<table tableName="TM_USER" domainObjectName="User"> -->
-<!-- 			<generatedKey column="USER_ID" sqlStatement="MySql" -->
-<!-- 				identity="true" /> -->
-<!-- 		</table> -->
+		<table tableName="TM_USER" domainObjectName="User">
+			<generatedKey column="USER_ID" sqlStatement="MySql"
+				identity="true" />
+		</table>
 <!-- 		<table tableName="TM_VIDEO" domainObjectName="Video"> -->
 <!-- 			<generatedKey column="VIDEO_ID" sqlStatement="MySql" -->
 <!-- 				identity="true" /> -->
@@ -36,12 +36,16 @@
 <!--            <generatedKey column="ID" sqlStatement="MySql" -->
 <!--                identity="true" /> -->
 <!--        </table> -->
-<!--        <table tableName="TT_VOTE" domainObjectName="Vote"> -->
-<!--            <generatedKey column="VOTE_ID" sqlStatement="MySql" -->
-<!--                identity="true" /> -->
-<!--        </table> -->
+       <table tableName="TT_VOTE" domainObjectName="Vote">
+           <generatedKey column="VOTE_ID" sqlStatement="MySql"
+               identity="true" />
+       </table>
        <table tableName="TT_VOTE_SUBJECT" domainObjectName="VoteSubject">
            <generatedKey column="SUBJECT_ID" sqlStatement="MySql"
+               identity="true" />
+       </table>
+       <table tableName="TT_DEBATE" domainObjectName="Debate">
+           <generatedKey column="DEBATE_ID" sqlStatement="MySql"
                identity="true" />
        </table>
 <!--        <table tableName="TT_GROUP_USER" domainObjectName="GroupUser"> -->
