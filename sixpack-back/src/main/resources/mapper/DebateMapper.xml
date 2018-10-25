@@ -40,7 +40,7 @@
       UPDATE_ON)
     values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, 
       #{status,jdbcType=SMALLINT}, #{reverse,jdbcType=VARCHAR}, #{obverse,jdbcType=VARCHAR}, 
-      #{createBy,jdbcType=INTEGER}, #{createOn,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=INTEGER}, now(), #{updateBy,jdbcType=INTEGER}, 
       #{updateOn,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.troytan.sixpack.domain.Debate">
@@ -79,5 +79,27 @@
     select DEBATE_ID, TITLE, CONTENT, GROUP_ID, STATUS, REVERSE, OBVERSE, CREATE_BY, 
     CREATE_ON, UPDATE_BY, UPDATE_ON
     from tt_debate
+  </select>
+  <update id="deleteByStatus" parameterType="Integer">
+    update tt_debate set status=0
+    where DEBATE_ID = #{debateId,jdbcType=INTEGER}
+  </update>
+  <resultMap extends="BaseResultMap" id="DebateDtoResultMap" type="com.troytan.sixpack.dto.DebateDto">
+       <result column="VALUE" jdbcType="SMALLINT" property="value" />
+  </resultMap>
+  <select id="getDebateDto"  resultMap="DebateDtoResultMap">
+     select debate.*, vote.value 
+     from tt_debate debate
+     left join tt_group_user gu on gu.GROUP_ID=debate.GROUP_ID
+     left join tt_vote vote on vote.DEBATE_ID=debate.DEBATE_ID and vote.USER_ID=#{#userId,jdbcType=INTEGER}
+     where debate.DEBATE_ID=#{debateId, jdbcType=INTEGER}
+      and (debate.CREATE_BY=#{userId, jdbcType=INTEGER}
+           or gu.OPEN_ID=(select OPEN_ID from tm_user where USER_ID=#{userId, jdbcType=INTEGER}))
+  </select>
+  <select id="listByUserId" parameterType="INTEGER" resultMap="BaseResultMap">
+    select * from tt_debate
+    where CREATE_BY=#{userId, jdbcType=INTEGER} 
+        and STATUS=1
+    order by CREATE_ON desc
   </select>
 </mapper>

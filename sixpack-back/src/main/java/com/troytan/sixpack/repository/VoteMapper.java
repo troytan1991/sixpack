@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.troytan.sixpack.domain.Vote;
 import com.troytan.sixpack.dto.AnonymousVoteResult;
+import com.troytan.sixpack.dto.DebateResult;
 import com.troytan.sixpack.dto.RealVoteResult;
 import com.troytan.sixpack.dto.VoteResult;
 
@@ -49,4 +50,6 @@ public interface VoteMapper {
     AnonymousVoteResult getVoteResultWithOutUser(Integer subjectId);
 
     List<RealVoteResult> getVoteResultWithUser(Integer subjectId);
+
+    DebateResult getDebateResult(Integer debateId);
 }

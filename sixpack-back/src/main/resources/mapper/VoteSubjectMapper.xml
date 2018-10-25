@@ -107,16 +107,4 @@
      and (subject.CREATE_BY=#{userId,jdbcType=INTEGER} 
           or gu.OPEN_ID=(select OPEN_ID from tm_user where USER_ID=#{userId,jdbcType=INTEGER}))
   </select>
-   <select id="listByUserId" parameterType="Integer" resultMap="BaseResultMap">
-    SELECT * FROM tt_vote_subject 
-    where CREATE_BY=#{userId, jdbcType=INTEGER} 
-        and STATUS=1
-    order by CREATE_ON desc
-  </select>
-  
-  <update id="deleteByUserAndId">
-    update tt_vote_subject set STATUS=0
-    where CREATE_BY=#{userId, jdbcType=INTEGER} 
-     and SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
-  </update>
 </mapper>
