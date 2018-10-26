@@ -65,6 +65,9 @@ public class VoteServiceImpl implements VoteService {
     public VoteResult getVoteResult(Integer subjectId) {
         VoteResult voteResult = new VoteResult();
         VoteSubject subject = voteSubjectMapper.selectByPrimaryKey(subjectId);
+        if (subject == null) {
+            return null;
+        }
         List<RealVoteResult> results = voteMapper.getVoteResultWithUser(subjectId);
         voteResult.setSide1(generateSideResult(results, subject, (short) 1));
         voteResult.setSide2(generateSideResult(results, subject, (short) 2));

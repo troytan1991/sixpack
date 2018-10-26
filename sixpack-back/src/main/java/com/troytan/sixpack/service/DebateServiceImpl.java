@@ -116,9 +116,11 @@ public class DebateServiceImpl implements DebateService {
     @Override
     public DebateResult getDebateResult(Integer debateId) {
         DebateResult debateResult = voteMapper.getDebateResult(debateId);
-        Integer totalCount = debateMapper.selectByPrimaryKey(debateId).getTotalCount();
-        debateResult.setTotalCount(totalCount);
-        debateResult.setLeftCount(totalCount - debateResult.getObverseCount() - debateResult.getReverseCount());
+        if (debateResult != null) {
+            Integer totalCount = debateMapper.selectByPrimaryKey(debateId).getTotalCount();
+            debateResult.setTotalCount(totalCount);
+            debateResult.setLeftCount(totalCount - debateResult.getObverseCount() - debateResult.getReverseCount());
+        }
         return debateResult;
     }
 
