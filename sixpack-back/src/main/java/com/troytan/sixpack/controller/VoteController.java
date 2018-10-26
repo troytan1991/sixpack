@@ -1,7 +1,10 @@
 package com.troytan.sixpack.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +40,30 @@ public class VoteController {
     }
 
     /**
+     * 获取发送列表
+     *
+     * @author troytan
+     * @date 2018年10月26日
+     * @return
+     */
+    @GetMapping("/sendVotes")
+    public List<VoteSubject> getSendSubjects() {
+        return voteService.getSendSubjects();
+    }
+
+    /**
+     * 删除投票主题
+     *
+     * @author troytan
+     * @date 2018年10月26日
+     * @param subjectId
+     */
+    @DeleteMapping("/{subjectId}")
+    public void deleteSubject(@PathVariable("subjectId") Integer subjectId) {
+        voteService.deleteSubject(subjectId);
+    }
+
+    /**
      * 投票
      * 
      * @author troytan
@@ -63,6 +90,7 @@ public class VoteController {
     public VoteResult getVoteResult(@PathVariable("subjectId") Integer subjectId) {
         return voteService.getVoteResult(subjectId);
     }
+
     /**
      * 关联群组
      *

@@ -44,5 +44,9 @@ public interface VoteSubjectMapper {
      */
     int updateByPrimaryKey(VoteSubject record);
 
-    VoteSubjectDto getSubjectDto(@Param("subjectId")Integer subjectId, @Param("userId")Integer userId);
+    VoteSubjectDto getSubjectDto(@Param("subjectId") Integer subjectId, @Param("userId") Integer userId);
+
+    List<VoteSubject> listByUserId(Integer userId);
+
+    void deleteById(Integer subjectId);
 }

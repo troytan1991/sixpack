@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.troytan.sixpack.domain.User;
 import com.troytan.sixpack.domain.Vote;
 import com.troytan.sixpack.domain.VoteSubject;
-import com.troytan.sixpack.dto.AnonymousVoteResult;
 import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.GroupResult;
 import com.troytan.sixpack.dto.RealVoteResult;
@@ -66,30 +65,18 @@ public class VoteServiceImpl implements VoteService {
     public VoteResult getVoteResult(Integer subjectId) {
         VoteResult voteResult = new VoteResult();
         VoteSubject subject = voteSubjectMapper.selectByPrimaryKey(subjectId);
-        int unitPrice = subject.getUnitPrice();
-        int votedCount = 0;
-        if (subject.getAnonymous()) {
-            // 匿名投票
-            AnonymousVoteResult aResult = voteMapper.getVoteResultWithOutUser(subjectId);
-            voteResult.setSide1(generateAnonyResult(aResult.getGroup1Count(), unitPrice));
-            voteResult.setSide2(generateAnonyResult(aResult.getGroup2Count(), unitPrice));
-            voteResult.setSide3(generateAnonyResult(aResult.getGroup3Count(), unitPrice));
-            voteResult.setSide4(generateAnonyResult(aResult.getGroup4Count(), unitPrice));
-            votedCount = aResult.getGroup1Count() + aResult.getGroup2Count() + aResult.getGroup3Count()
-                         + aResult.getGroup4Count();
-        } else {
-            // 非匿名投票
-            List<RealVoteResult> rResults = voteMapper.getVoteResultWithUser(subjectId);
-            voteResult.setSide1(generateRealResult(rResults, (short) 1, unitPrice));
-            voteResult.setSide2(generateRealResult(rResults, (short) 2, unitPrice));
-            voteResult.setSide3(generateRealResult(rResults, (short) 3, unitPrice));
-            voteResult.setSide4(generateRealResult(rResults, (short) 4, unitPrice));
-            votedCount = rResults.stream().mapToInt(result -> result.getUsers().size()).sum();
-
-        }
+        List<RealVoteResult> results = voteMapper.getVoteResultWithUser(subjectId);
+        voteResult.setSide1(generateSideResult(results, subject, (short) 1));
+        voteResult.setSide2(generateSideResult(results, subject, (short) 2));
+        voteResult.setSide3(generateSideResult(results, subject, (short) 3));
+        voteResult.setSide4(generateSideResult(results, subject, (short) 4));
+        int votedCount = results.stream().mapToInt(result -> result.getUsers().size()).sum();
+        int votedAmount = voteResult.getSide1().getTotalAmount() + voteResult.getSide2().getTotalAmount()
+                          + voteResult.getSide3().getTotalAmount() + voteResult.getSide4().getTotalAmount();
         voteResult.setVotedCount(votedCount);
         voteResult.setUnvoteCount(subject.getTotalNum() - votedCount);
-        voteResult.setLeftAmount((subject.getTotalNum() - votedCount) * unitPrice);
+
+        voteResult.setLeftAmount(subject.getFundPool() - votedAmount);
         return voteResult;
     }
 
@@ -102,13 +89,19 @@ public class VoteServiceImpl implements VoteService {
      * @param unitPrice
      * @return
      */
-    private GroupResult generateRealResult(List<RealVoteResult> realResults, short value, int unitPrice) {
+    private GroupResult generateSideResult(List<RealVoteResult> realResults, VoteSubject subject, short value) {
         GroupResult groupResult = new GroupResult();
         boolean flag = false;
         for (RealVoteResult realVoteResult : realResults) {
             if (realVoteResult.getValue().equals(value)) {
                 List<User> users = realVoteResult.getUsers();
-                int totalAmount = users.stream().mapToInt(user -> user.getVoteWeight() * unitPrice).sum();
+                int totalAmount = users.stream().mapToInt(user -> {
+                    if (subject.getAnonymous()) {
+                        user.setAvatarUrl(ANONYMOUS_URL);
+                        user.setNickname(ANONYMOUS_NAME);
+                    }
+                    return user.getVoteWeight() * subject.getUnitPrice();
+                }).sum();
                 groupResult.setTotalAmount(totalAmount);
                 groupResult.setUsers(users);
                 flag = true;
@@ -120,30 +113,6 @@ public class VoteServiceImpl implements VoteService {
             groupResult.setTotalAmount(0);
             groupResult.setUsers(new ArrayList<>());
         }
-        return groupResult;
-    }
-
-    /**
-     * 生成匿名投票结果
-     *
-     * @author troytan
-     * @date 2018年10月22日
-     * @param count
-     * @param unitPrice
-     * @return
-     */
-    private GroupResult generateAnonyResult(int count, int unitPrice) {
-        GroupResult groupResult = new GroupResult();
-        groupResult.setTotalAmount(unitPrice * count);
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            User user = new User();
-            user.setAvatarUrl(ANONYMOUS_URL);
-            user.setNickname(ANONYMOUS_NAME);
-
-            users.add(user);
-        }
-        groupResult.setUsers(users);
         return groupResult;
     }
 
@@ -175,6 +144,17 @@ public class VoteServiceImpl implements VoteService {
         }
 
         return groupId;
+    }
+
+    @Override
+    public List<VoteSubject> getSendSubjects() {
+
+        return voteSubjectMapper.listByUserId(userService.getCurrentUser());
+    }
+
+    @Override
+    public void deleteSubject(Integer subjectId) {
+        voteSubjectMapper.deleteById(subjectId);
     }
 
 }
