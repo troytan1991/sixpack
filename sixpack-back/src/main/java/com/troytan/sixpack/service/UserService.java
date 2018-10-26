@@ -25,4 +25,6 @@ public interface UserService {
 
     String registerGroup(GroupDto groupDto) throws Exception;
 
+    String registerGroupUser(GroupDto groupDto) throws Exception;
+
 }

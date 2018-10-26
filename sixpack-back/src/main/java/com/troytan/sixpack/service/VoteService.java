@@ -1,6 +1,7 @@
 package com.troytan.sixpack.service;
 
 import com.troytan.sixpack.domain.VoteSubject;
+import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.VoteResult;
 
 public interface VoteService {
@@ -9,13 +10,8 @@ public interface VoteService {
 
     VoteResult getVoteResult(Integer subjectId);
 
-    // int createSubject(VoteSubject subject);
-
     VoteSubject getSubject(Integer subjectId);
 
-    // List<VoteSubject> listSendSubject();
+    String registerGroup(GroupDto groupDto) throws Exception;
 
-    // List<VoteSubject> listPaticipateSubject();
-
-    // void deleteSubject(Integer subjectId);
 }

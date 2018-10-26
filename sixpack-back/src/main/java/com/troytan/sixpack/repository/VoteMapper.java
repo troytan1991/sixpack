@@ -2,6 +2,8 @@ package com.troytan.sixpack.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.troytan.sixpack.domain.Vote;
 import com.troytan.sixpack.dto.AnonymousVoteResult;
 import com.troytan.sixpack.dto.DebateResult;
@@ -52,4 +54,6 @@ public interface VoteMapper {
     List<RealVoteResult> getVoteResultWithUser(Integer subjectId);
 
     DebateResult getDebateResult(Integer debateId);
+
+    void deleteByUserAndId(@Param("userId") Integer userId, @Param("debateId") Integer debateId);
 }

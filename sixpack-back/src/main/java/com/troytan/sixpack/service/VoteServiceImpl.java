@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.troytan.sixpack.domain.User;
 import com.troytan.sixpack.domain.Vote;
 import com.troytan.sixpack.domain.VoteSubject;
 import com.troytan.sixpack.dto.AnonymousVoteResult;
+import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.GroupResult;
 import com.troytan.sixpack.dto.RealVoteResult;
 import com.troytan.sixpack.dto.VoteResult;
@@ -17,6 +19,7 @@ import com.troytan.sixpack.repository.VoteMapper;
 import com.troytan.sixpack.repository.VoteSubjectMapper;
 
 @Service
+@Transactional
 public class VoteServiceImpl implements VoteService {
 
     @Autowired
@@ -105,7 +108,8 @@ public class VoteServiceImpl implements VoteService {
         for (RealVoteResult realVoteResult : realResults) {
             if (realVoteResult.getValue().equals(value)) {
                 List<User> users = realVoteResult.getUsers();
-                groupResult.setTotalAcount(users.size() * unitPrice);
+                int totalAmount = users.stream().mapToInt(user -> user.getVoteWeight() * unitPrice).sum();
+                groupResult.setTotalAmount(totalAmount);
                 groupResult.setUsers(users);
                 flag = true;
                 break;
@@ -113,7 +117,7 @@ public class VoteServiceImpl implements VoteService {
         }
         if (!flag) {
             // 未找到相关value
-            groupResult.setTotalAcount(0);
+            groupResult.setTotalAmount(0);
             groupResult.setUsers(new ArrayList<>());
         }
         return groupResult;
@@ -130,7 +134,7 @@ public class VoteServiceImpl implements VoteService {
      */
     private GroupResult generateAnonyResult(int count, int unitPrice) {
         GroupResult groupResult = new GroupResult();
-        groupResult.setTotalAcount(unitPrice * count);
+        groupResult.setTotalAmount(unitPrice * count);
         List<User> users = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             User user = new User();
@@ -142,22 +146,6 @@ public class VoteServiceImpl implements VoteService {
         groupResult.setUsers(users);
         return groupResult;
     }
-    /**
-     * 创建投票主题
-     *
-     * @author troytan
-     * @date 2018年10月18日
-     * @param subject
-     * @return (non-Javadoc)
-     * @see com.troytan.sixpack.service.VoteService#createSubject(com.troytan.sixpack.domain.VoteSubject)
-     */
-    // @Override
-    // public int createSubject(VoteSubject subject) {
-    // subject.setCreateBy(userService.getCurrentUser());
-    // subject.setStatus((short) 1);
-    // voteSubjectMapper.insert(subject);
-    // return subject.getSubjectId();
-    // }
 
     /**
      * 获取主题,为空则表示无权限访问
@@ -174,29 +162,19 @@ public class VoteServiceImpl implements VoteService {
         return voteSubjectMapper.getSubjectDto(subjectId, userService.getCurrentUser());
     }
 
-    // @Override
-    // public List<VoteSubject> listSendSubject() {
-    //
-    // return voteSubjectMapper.listByUserId(userService.getCurrentUser());
-    // }
+    @Override
+    public String registerGroup(GroupDto groupDto) throws Exception {
+        // 群用户关联
+        String groupId = userService.registerGroupUser(groupDto);
+        // 投票主题-群ID关联
+        VoteSubject dbSubject = voteSubjectMapper.selectByPrimaryKey(groupDto.getSubjectId());
+        if (dbSubject.getGroupId() == null) {
+            dbSubject.setGroupId(groupId);
+            dbSubject.setUpdateBy(userService.getCurrentUser());
+            voteSubjectMapper.updateByPrimaryKey(dbSubject);
+        }
 
-    // @Override
-    // public List<VoteSubject> listPaticipateSubject() {
-    // // TODO Auto-generated method stub
-    // return null;
-    // }
-
-    /**
-     * 删除主题
-     *
-     * @author troytan
-     * @date 2018年10月19日
-     * @param subjectId (non-Javadoc)
-     * @see com.troytan.sixpack.service.VoteService#deleteSubject(java.lang.Integer)
-     */
-    // @Override
-    // public void deleteSubject(Integer subjectId) {
-    // voteSubjectMapper.deleteByUserAndId(subjectId, userService.getCurrentUser());
-    // }
+        return groupId;
+    }
 
 }

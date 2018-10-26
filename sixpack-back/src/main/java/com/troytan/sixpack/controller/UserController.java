@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.troytan.sixpack.aspect.NoAuth;
-import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.OauthDto;
 import com.troytan.sixpack.dto.UserDto;
 import com.troytan.sixpack.dto.UserSessionDto;
@@ -136,21 +135,6 @@ public class UserController {
     @PostMapping
     public void updateUser(@RequestBody UserDto userDto) {
         userService.updateUser(userDto);
-    }
-
-    /**
-     * 记录群组信息
-     *
-     * @author troytan
-     * @date 2018年7月10日
-     * @param groupDto
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/group")
-    public String registerGroup(@RequestBody GroupDto groupDto) throws Exception {
-
-        return userService.registerGroup(groupDto);
     }
 
 }

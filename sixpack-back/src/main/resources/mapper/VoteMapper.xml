@@ -98,4 +98,9 @@
     from tt_vote 
     where DEBATE_ID=#{debateId, jdbcType=INTEGER}
   </select>
+  <delete id="deleteByUserAndId" >
+    delete from tt_vote
+    where DEBATE_ID=#{debateId, jdbcType=INTEGER}
+     and USER_ID=#{userId, jdbcType=INTEGER}
+  </delete>
 </mapper>

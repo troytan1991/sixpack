@@ -60,7 +60,8 @@ public class UserServiceImpl implements UserService {
         String shaKey = null;
         try {
             shaKey = SHAUtils.getSha1(oauthDto.getOpenid() + oauthDto.getSession_key());
-            userService.putSession(shaKey, new UserSessionDto(user.getUserId(), user.getOpenId(), oauthDto.getSession_key()));
+            userService.putSession(shaKey,
+                                   new UserSessionDto(user.getUserId(), user.getOpenId(), oauthDto.getSession_key()));
         } catch (NoSuchAlgorithmException e) {
 
         }
@@ -214,6 +215,36 @@ public class UserServiceImpl implements UserService {
             groupUserMapper.insert(groupUser);
         }
 
+        return groupId;
+    }
+
+    /**
+     * 群用户关联
+     *
+     * @author troytan
+     * @date 2018年10月26日
+     * @param groupDto
+     * @return (non-Javadoc)
+     * @throws Exception 
+     * @see com.troytan.sixpack.service.UserService#registerGroupUser(com.troytan.sixpack.dto.GroupDto)
+     */
+    @Override
+    public String registerGroupUser(GroupDto groupDto) throws Exception {
+        UserSessionDto sessionDto = userHolder.get();
+        Integer userId = userService.getCurrentUser();
+        // 解密群ID
+        String result = AESUtils.decrypt(groupDto.getEncryptedData(), groupDto.getIv(), sessionDto.getSessionKey());
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(result);
+        String groupId = jsonObject.get("openGId").getAsString();
+
+        GroupUser groupUser = groupUserMapper.selectByGroupAndOpenId(groupId, sessionDto.getOpenId());
+        if (groupUser == null) {
+            groupUser = new GroupUser();
+            groupUser.setGroupId(groupId);
+            groupUser.setOpenId(sessionDto.getOpenId());
+            groupUser.setCreateBy(userId);
+            groupUserMapper.insert(groupUser);
+        }
         return groupId;
     }
 }

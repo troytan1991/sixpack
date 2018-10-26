@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.troytan.sixpack.aspect.NoAuth;
 import com.troytan.sixpack.domain.Debate;
 import com.troytan.sixpack.dto.DebateResult;
+import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.service.DebateService;
 
 @CrossOrigin("*")
@@ -58,7 +59,7 @@ public class DebateController {
      * @date 2018年10月25日
      * @param debateId
      */
-    @PutMapping("/vote/{debateId}")
+    @PostMapping("/vote/{debateId}")
     public void voteDebate(@PathVariable("debateId") Integer debateId, @RequestParam("value") Short value) {
         debateService.voteDebate(debateId, value);
     }
@@ -88,8 +89,33 @@ public class DebateController {
         return debateService.getSendDebates();
     }
 
+    /**
+     * 获取投票结果
+     *
+     * @author troytan
+     * @date 2018年10月26日
+     * @param debateId
+     * @return
+     */
+    @CrossOrigin("*")
+    @NoAuth
     @GetMapping("/result/{debateId}")
     public DebateResult getDebateResult(@PathVariable("debateId") Integer debateId) {
         return debateService.getDebateResult(debateId);
+    }
+
+    /**
+     * 关联群组
+     *
+     * @author troytan
+     * @date 2018年10月26日
+     * @param groupDto
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/group")
+    public String registerGroup(@RequestBody GroupDto groupDto) throws Exception {
+
+        return debateService.registerGroup(groupDto);
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.troytan.sixpack.domain.Debate;
 import com.troytan.sixpack.dto.DebateResult;
+import com.troytan.sixpack.dto.GroupDto;
 
 public interface DebateService {
 
@@ -18,5 +19,7 @@ public interface DebateService {
     List<Debate> getSendDebates();
 
     DebateResult getDebateResult(Integer debateId);
+
+    String registerGroup(GroupDto groupDto) throws Exception;
 
 }
