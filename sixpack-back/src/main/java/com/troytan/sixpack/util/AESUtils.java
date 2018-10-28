@@ -43,12 +43,11 @@ public class AESUtils {
     }
 
     public static void main(String[] args) throws Exception {
-         String sessionKey ="VHQ5myeI80LrSz4pEPixrw==";
-         String encryptedData=
-         "cy7BkSSfMC6ZqTIC/JmDAmJFCaavcT8d6DuscOQdci+CqY6Cidl6FM622zua3oubDxHxHHDi/k2PVA06UNmB2DoD262IJ9d0TKtqOh53drK9d1eJAS6LBz9jr8R/Wl7Yn6rStQRcKI3j5limFi7KNg==";
-         String iv= "0UF5ABuTzWboP12o1xH+zA==";
-        
-         System.out.println(decrypt(encryptedData, iv, sessionKey));
+        String sessionKey = "VHQ5myeI80LrSz4pEPixrw==";
+        String encryptedData = "cy7BkSSfMC6ZqTIC/JmDAmJFCaavcT8d6DuscOQdci+CqY6Cidl6FM622zua3oubDxHxHHDi/k2PVA06UNmB2DoD262IJ9d0TKtqOh53drK9d1eJAS6LBz9jr8R/Wl7Yn6rStQRcKI3j5limFi7KNg==";
+        String iv = "0UF5ABuTzWboP12o1xH+zA==";
+
+        System.out.println(decrypt(encryptedData, iv, sessionKey));
     }
 
 }

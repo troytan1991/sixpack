@@ -140,7 +140,7 @@ public class VoteServiceImpl implements VoteService {
         String groupId = userService.registerGroupUser(groupDto);
         // 投票主题-群ID关联
         VoteSubject dbSubject = voteSubjectMapper.selectByPrimaryKey(groupDto.getSubjectId());
-        if (dbSubject.getGroupId() == null) {
+        if (dbSubject != null && dbSubject.getGroupId() == null) {
             dbSubject.setGroupId(groupId);
             dbSubject.setUpdateBy(userService.getCurrentUser());
             voteSubjectMapper.updateByPrimaryKey(dbSubject);
