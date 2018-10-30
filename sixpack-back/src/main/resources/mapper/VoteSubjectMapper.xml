@@ -101,7 +101,7 @@
        <result column="VALUE" jdbcType="SMALLINT" property="value" />
   </resultMap>
   <select id="getSubjectDto" resultMap="SubjectDtoResultMap">
-    select subject.*, vote.VALUE
+    select distinct subject.*, vote.VALUE
     from tt_vote_subject subject
     left join tt_group_user gu on gu.GROUP_ID=subject.GROUP_ID
     left join tt_vote vote on vote.SUBJECT_ID = subject.SUBJECT_ID and vote.USER_ID=#{userId, jdbcType=INTEGER}

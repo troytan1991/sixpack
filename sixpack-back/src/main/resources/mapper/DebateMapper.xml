@@ -90,7 +90,7 @@
        <result column="VALUE" jdbcType="SMALLINT" property="value" />
   </resultMap>
   <select id="getDebateDto" resultMap="DebateDtoResultMap">
-     select debate.*, vote.value 
+     select distinct debate.*, vote.value 
      from tt_debate debate
      left join tt_group_user gu on gu.GROUP_ID=debate.GROUP_ID
      left join tt_vote vote on vote.DEBATE_ID=debate.DEBATE_ID and vote.USER_ID=#{userId,jdbcType=INTEGER}

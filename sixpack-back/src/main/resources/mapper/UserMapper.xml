@@ -42,7 +42,7 @@
     values (#{openId,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{gender,jdbcType=DECIMAL}, #{prefer,jdbcType=SMALLINT}, 
       #{createBy,jdbcType=INTEGER}, now(), #{updateBy,jdbcType=INTEGER}, 
-      #{updateOn,jdbcType=TIMESTAMP}, #{voteWeight,jdbcType=SMALLINT})
+      #{updateOn,jdbcType=TIMESTAMP}, 1)
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.troytan.sixpack.domain.User">
     <!--

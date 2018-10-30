@@ -1,5 +1,6 @@
 package com.troytan.sixpack.service;
 
+import com.troytan.sixpack.domain.User;
 import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.OauthDto;
 import com.troytan.sixpack.dto.UserDto;
@@ -26,5 +27,7 @@ public interface UserService {
     String registerGroup(GroupDto groupDto) throws Exception;
 
     String registerGroupUser(GroupDto groupDto) throws Exception;
+
+    User getUser();
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.troytan.sixpack.aspect.NoAuth;
+import com.troytan.sixpack.domain.User;
 import com.troytan.sixpack.dto.OauthDto;
 import com.troytan.sixpack.dto.UserDto;
 import com.troytan.sixpack.dto.UserSessionDto;
@@ -135,6 +136,11 @@ public class UserController {
     @PostMapping
     public void updateUser(@RequestBody UserDto userDto) {
         userService.updateUser(userDto);
+    }
+    
+    @GetMapping
+    public User getUser() {
+        return userService.getUser();
     }
 
 }

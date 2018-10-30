@@ -11,9 +11,9 @@
     <!-- 访问滚动日志 -->
 	<appender name="visitRollingFile"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>/midware/logs/notify/notify_visit.log</file>
+		<file>/midware/logs/sixpack/sixpack_visit.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>/midware/logs/notify/notify_visit.%d{yyyy-MM-dd}.%i.log
+			<fileNamePattern>/midware/logs/sixpack/sixpack_visit.%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<MaxHistory>20</MaxHistory>
 			<TimeBasedFileNamingAndTriggeringPolicy
@@ -35,9 +35,9 @@
 	<!-- 错误日志 -->
 	<appender name="errorRollingFile"
         class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/midware/logs/notify/notify_error.log</file>
+        <file>/midware/logs/sixpack/sixpack_error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/midware/logs/notify/notify_error.%d{yyyy-MM-dd}.%i.log
+            <fileNamePattern>/midware/logs/sixpack/sixpack_error.%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <MaxHistory>20</MaxHistory>
             <TimeBasedFileNamingAndTriggeringPolicy

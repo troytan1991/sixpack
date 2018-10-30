@@ -1,6 +1,5 @@
 package com.troytan.sixpack.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,8 @@ public class VoteServiceImpl implements VoteService {
     private VoteMapper        voteMapper;
     @Autowired
     private VoteSubjectMapper voteSubjectMapper;
-    private final String      ANONYMOUS_URL  = "http://troytan.club/vote/anonymous.png";
-    private final String      ANONYMOUS_NAME = "anonymous";
+    // private final String ANONYMOUS_URL = "http://troytan.club/vote/anonymous.png";
+    // private final String ANONYMOUS_NAME = "anonymous";
 
     /**
      * 向主题投票
@@ -98,15 +97,9 @@ public class VoteServiceImpl implements VoteService {
         for (RealVoteResult realVoteResult : realResults) {
             if (realVoteResult.getValue().equals(value)) {
                 List<User> users = realVoteResult.getUsers();
-                int totalAmount = users.stream().mapToInt(user -> {
-                    if (subject.getAnonymous()) {
-                        user.setAvatarUrl(ANONYMOUS_URL);
-                        user.setNickname(ANONYMOUS_NAME);
-                    }
-                    return user.getVoteWeight() * subject.getUnitPrice();
-                }).sum();
-                groupResult.setTotalAmount(totalAmount);
-                groupResult.setUsers(users);
+                int voteCount = users.stream().mapToInt(user -> user.getVoteWeight()).sum();
+                groupResult.setVoteCount(voteCount);
+                groupResult.setTotalAmount(voteCount * subject.getUnitPrice());
                 flag = true;
                 break;
             }
@@ -114,7 +107,7 @@ public class VoteServiceImpl implements VoteService {
         if (!flag) {
             // 未找到相关value
             groupResult.setTotalAmount(0);
-            groupResult.setUsers(new ArrayList<>());
+            groupResult.setVoteCount(0);
         }
         return groupResult;
     }

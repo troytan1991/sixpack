@@ -225,7 +225,7 @@ public class UserServiceImpl implements UserService {
      * @date 2018年10月26日
      * @param groupDto
      * @return (non-Javadoc)
-     * @throws Exception 
+     * @throws Exception
      * @see com.troytan.sixpack.service.UserService#registerGroupUser(com.troytan.sixpack.dto.GroupDto)
      */
     @Override
@@ -246,5 +246,11 @@ public class UserServiceImpl implements UserService {
             groupUserMapper.insert(groupUser);
         }
         return groupId;
+    }
+
+    @Override
+    public User getUser() {
+
+        return userMapper.selectByPrimaryKey(userService.getCurrentUser());
     }
 }
