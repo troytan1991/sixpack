@@ -1,1 +1,49 @@
-<text>敬请期待！</text>
+<view class="mark-line header-view">
+  {{level}}
+</view>
+<scroll-view class='wrap-scroll' style='height:{{scrollHeight}}px' scroll-y bindscroll="onWrapScroll">
+  <view class='plan-container'>
+    <view bindtap='onDayTap' data-item="{{item}}" class="progress-bar progress-{{item.status*50}}" wx:for="{{plan_1s}}" wx:key="plan_1">
+      <view class="day-box">
+        <text class='day-text'>第{{item.trainingDay}}天</text>
+        <view class='time-box'>
+          <image src='/asset/icon/clock.png'></image>
+          <text>{{item.cost}}</text>
+        </view>
+      </view>
+      <view wx:if="{{item.status === null}}" class='mask'>
+        <image src="/asset/icon/lock.png"></image>
+      </view>
+    </view>
+  </view>
+  <view id='mid-line' class='mark-line middle'>等级二</view>
+  <view class='plan-container'>
+    <view bindtap='onDayTap' data-item="{{item}}" class="progress-bar progress-{{item.status*50}}" wx:for="{{plan_2s}}" wx:key="plan_2">
+      <view class="day-box">
+        <text class='day-text'>第{{item.trainingDay}}天</text>
+        <view class='time-box'>
+          <image src='/asset/icon/clock.png'></image>
+          <text>{{item.cost}}</text>
+        </view>
+      </view>
+      <view wx:if="{{item.status === null}}" class='mask'>
+        <image src="/asset/icon/lock.png"></image>
+      </view>
+    </view>
+  </view>
+  <view id='hard-line' class='mark-line middle'>等级三</view>
+  <view class='plan-container'>
+    <view bindtap='onDayTap' data-item="{{item}}" class="progress-bar progress-{{item.status*50}}" wx:for="{{plan_3s}}" wx:key="plan_3">
+      <view class="day-box">
+        <text class='day-text'>第{{item.trainingDay}}天</text>
+        <view class='time-box'>
+          <image src='/asset/icon/clock.png'></image>
+          <text>{{item.cost}}</text>
+        </view>
+      </view>
+      <view wx:if="{{item.status === null}}" class='mask'>
+        <image src="/asset/icon/lock.png"></image>
+      </view>
+    </view>
+  </view>
+</scroll-view>

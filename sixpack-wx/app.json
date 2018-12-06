@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/main/main",
+    "pages/day/day",
     "pages/train/train",
     "pages/video/video",
     "pages/plan/plan",

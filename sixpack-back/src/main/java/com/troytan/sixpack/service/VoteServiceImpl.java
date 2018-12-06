@@ -109,7 +109,7 @@ public class VoteServiceImpl implements VoteService {
             groupResult.setTotalAmount(0);
             groupResult.setVoteCount(0);
         }
-        return groupResult;
+        return groupResult; 
     }
 
     /**

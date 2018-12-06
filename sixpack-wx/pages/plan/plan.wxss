@@ -2,12 +2,110 @@ page {
   background-color: #e6e8ed;
 }
 
-text {
+.wrap-scroll {
   width: 100%;
-  height: 1000rpx;
+  position: absolute;
+  top: 60rpx;
+  /* white-space: nowrap; */
+}
+
+.header-view {
+  position: fixed;
+  top: 0;
+  z-index: 3;
+}
+
+.mark-line {
+  height: 60rpx;
+  background-color: white;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 50rpx;
+  justify-content: center;
+  font-size: 40rpx;
+  font-weight: bold;
   color: grey;
+  width: 100%;
+  border-bottom: 2rpx solid #e6e8ed;
+}
+
+.middle {
+  margin-top: 20rpx;
+}
+
+.plan-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.progress-bar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  background: #ddd;
+  display: flex;
+  margin: 20rpx 0 0 37rpx;
+  position: relative;
+}
+
+.day-box {
+  background-color: white;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.progress-50 {
+  background-image: linear-gradient(-90deg, #ddd 50%, transparent 50%),
+                      linear-gradient(90deg, #028cd5 50%, #ddd 50%);
+}
+
+.progress-100 {
+  background-image: linear-gradient(90deg, #028cd5 50%, transparent 50%),
+                      linear-gradient(-90deg, #028cd5 50%, #ddd 50%);
+}
+
+.day-text {
+  font-size: 30rpx;
+  color: #0a3859;
+}
+
+.time-box {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+}
+
+.time-box image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.time-box text {
+  font-size: 25rpx;
+  margin-left: 5rpx;
+  color: #0a3859;
+}
+
+.mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0.5;
+  display: flex;
+  background-color: grey;
+  z-index: 2;
+}
+
+.mask image {
+  width: 50rpx;
+  height: 50rpx;
+  margin: auto;
 }

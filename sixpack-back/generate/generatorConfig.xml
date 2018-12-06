@@ -18,39 +18,51 @@
 		<javaClientGenerator targetPackage="com.troytan.sixpack.repository"
 			type="XMLMAPPER" targetProject="src/main/java" />
 
-<!-- 		<table tableName="TM_USER" domainObjectName="User"> -->
-<!-- 			<generatedKey column="USER_ID" sqlStatement="MySql" -->
-<!-- 				identity="true" /> -->
-<!-- 		</table> -->
-<!-- 		<table tableName="TM_VIDEO" domainObjectName="Video"> -->
-<!-- 			<generatedKey column="VIDEO_ID" sqlStatement="MySql" -->
-<!-- 				identity="true" /> -->
-<!-- 		</table> -->
-<!-- 		<table tableName="TM_VIDEO_DESC" domainObjectName="VideoDesc"> -->
-<!-- 		</table> -->
-<!-- 		<table tableName="TM_VIDEO_RC" domainObjectName="VideoRc"> -->
-<!-- 			<generatedKey column="VIDEO_RC_ID" sqlStatement="MySql" -->
-<!-- 				identity="true" /> -->
-<!-- 		</table> -->
-<!--        <table tableName="TT_FORM" domainObjectName="Form"> -->
-<!--            <generatedKey column="ID" sqlStatement="MySql" -->
-<!--                identity="true" /> -->
-<!--        </table> -->
-<!--        <table tableName="TT_VOTE" domainObjectName="Vote"> -->
-<!--            <generatedKey column="VOTE_ID" sqlStatement="MySql" -->
-<!--                identity="true" /> -->
-<!--        </table> -->
-       <table tableName="TT_VOTE_SUBJECT" domainObjectName="VoteSubject">
-           <generatedKey column="SUBJECT_ID" sqlStatement="MySql"
-               identity="true" />
-       </table>
-<!--        <table tableName="TT_DEBATE" domainObjectName="Debate"> -->
-<!--            <generatedKey column="DEBATE_ID" sqlStatement="MySql" -->
-<!--                identity="true" /> -->
-<!--        </table> -->
-<!--        <table tableName="TT_GROUP_USER" domainObjectName="GroupUser"> -->
-<!--            <generatedKey column="GROUP_USER_ID" sqlStatement="MySql" -->
-<!--                identity="true" /> -->
-<!--        </table> -->
+		<!-- <table tableName="TM_USER" domainObjectName="User"> -->
+		<!-- <generatedKey column="USER_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TM_VIDEO" domainObjectName="Video"> -->
+		<!-- <generatedKey column="VIDEO_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TM_VIDEO_DESC" domainObjectName="VideoDesc"> -->
+		<!-- </table> -->
+		<!-- <table tableName="TM_VIDEO_RC" domainObjectName="VideoRc"> -->
+		<!-- <generatedKey column="VIDEO_RC_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TT_FORM" domainObjectName="Form"> -->
+		<!-- <generatedKey column="ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TT_VOTE" domainObjectName="Vote"> -->
+		<!-- <generatedKey column="VOTE_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TT_VOTE_SUBJECT" domainObjectName="VoteSubject"> -->
+		<!-- <generatedKey column="SUBJECT_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TT_DEBATE" domainObjectName="Debate"> -->
+		<!-- <generatedKey column="DEBATE_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TT_GROUP_USER" domainObjectName="GroupUser"> -->
+		<!-- <generatedKey column="GROUP_USER_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<table tableName="TM_PLAN" domainObjectName="Plan">
+			<generatedKey column="PLAN_ID" sqlStatement="MySql"
+				identity="true" />
+		</table>
+		<table tableName="TM_PLAN_DETAIL" domainObjectName="PlanDetail">
+            <generatedKey column="PLAN_DETAIL_ID" sqlStatement="MySql"
+                identity="true" />
+        </table>
+        <table tableName="TT_USER_PLAN" domainObjectName="UserPlan">
+            <generatedKey column="USER_PLAN_ID" sqlStatement="MySql"
+                identity="true" />
+        </table>
 	</context>
 </generatorConfiguration>

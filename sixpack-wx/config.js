@@ -10,6 +10,10 @@ var config = {
   updatePreferUrl: `${root}/user/prefer/`,
   uploadFormIdsUrl: `${root}/user/form`,
 
+  getPlansUrl:`${root}/plan/plans`,
+  getPlanDetailUrl:`${root}/plan/detail/`,
+  markPlanUrl:`${root}/plan/mark/`,
+
   //封装的请求
   request: function({
     url,
