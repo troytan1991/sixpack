@@ -9,7 +9,8 @@ Page({
     planId: null,
     currentExc: null,
     pause: false,
-    excercises: []
+    excStatus: [true], //动作选中状态
+    restStatus: [] //休息选中状态
   },
 
   /**
@@ -23,29 +24,57 @@ Page({
         var detail = res.data;
         wx.setNavigationBarTitle({
           title: 'level' + detail.level + ' - ' + detail.trainingDay + "/" + detail.totalDay,
-        })
+        });
         that.setData({
-          excercises: detail.excercises,
           planId: detail.planId,
           detail: detail,
-          currentExc: detail.excercises[0],
+          currentExc: detail.vocation ? {} : detail.excercises[0],
           videoContext: wx.createVideoContext('videoId')
-        })
+        });
+        if (!detail.vocation) {
+          config.downloadVideos({
+            excercises: detail.excercises,
+            success: function() {
+              wx.hideLoading()
+              that.loadVideo();
+            }
+          })
+        }
       }
+    })
+  },
+  loadVideo: function() {
+    var detail = this.data.detail
+    for (var i in detail.excercises) {
+      detail.excercises[i].cachedFile = wx.getStorageSync(detail.excercises[i].videoId + '')
+    }
+    this.setData({
+      detail: detail,
+      currentExc: detail.excercises[0]
     })
   },
 
   onExcTap: function(e) {
+    var i = e.currentTarget.dataset.index,
+      excStatus = []
+    excStatus[i] = true
     this.setData({
       currentExc: e.currentTarget.dataset.exc,
-      pause: false
+      pause: false,
+      excStatus: excStatus,
+      restStatus: []
     })
     this.data.videoContext.play()
   },
   onRestTap: function(e) {
+    var i = e.currentTarget.dataset.index,
+      restStatus = [];
+    restStatus[i] = true
     this.data.videoContext.pause()
     this.setData({
-      pause: true
+      pause: true,
+      restStatus: restStatus,
+      excStatus: []
     })
   },
   onCancelMark: function() {
@@ -74,5 +103,5 @@ Page({
         })
       }
     })
-  }
+  },
 })

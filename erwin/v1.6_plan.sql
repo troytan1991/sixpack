@@ -288,3 +288,4 @@ values
 (67,	50,	50,	2,1,now()),
 (67,	26,	50,	2,1,now()),
 (67,	49,	50,	2,1,now());
+update tm_plan set default_status=0 where plan_id=1;

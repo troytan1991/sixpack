@@ -2,15 +2,15 @@
   今天是休息日，好好休养一天再训练吧！
 </view>
 <block wx:else>
-  <video id="videoId" class="main-video" src='{{currentExc.videoUrl}}' controls='' show-play-btn='' autoplay loop enable-progress-gesture=''></video>
+  <video id="videoId" class="main-video" src='{{currentExc.cachedFile}}' controls='' show-play-btn='' autoplay loop enable-progress-gesture=''></video>
   <scroll-view class='process-scroll' scroll-x="true">
-    <view class='exc-box' wx:for="{{excercises}}" wx:key="excercise">
-      <view bindtap='onExcTap' data-exc='{{item}}' class='img-box'>
+    <view class='exc-box' wx:for="{{detail.excercises}}" wx:key="excercise">
+      <view bindtap='onExcTap' data-index="{{index}}" data-exc='{{item}}' class="img-box {{excStatus[index]?'selected':''}}">
         <text class='title'>{{item.chnName}}</text>
         <image src='{{item.thumbUrl}}'></image>
         <text class='desc'>{{item.sets}}x{{item.repetitions}}</text>
       </view>
-      <view bindtap='onRestTap' class='rest-view'>30s</view>
+      <view bindtap='onRestTap' data-index="{{index}}" class="rest-view {{restStatus[index]?'selected':''}}">30s</view>
     </view>
   </scroll-view>
 

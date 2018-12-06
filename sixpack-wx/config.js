@@ -10,9 +10,9 @@ var config = {
   updatePreferUrl: `${root}/user/prefer/`,
   uploadFormIdsUrl: `${root}/user/form`,
 
-  getPlansUrl:`${root}/plan/plans`,
-  getPlanDetailUrl:`${root}/plan/detail/`,
-  markPlanUrl:`${root}/plan/mark/`,
+  getPlansUrl: `${root}/plan/plans`,
+  getPlanDetailUrl: `${root}/plan/detail/`,
+  markPlanUrl: `${root}/plan/mark/`,
 
   //封装的请求
   request: function({
@@ -138,11 +138,14 @@ var config = {
     wx.hideNavigationBarLoading()
   },
   //后台缓存视频
-  downloadVideo: function({
-    url,
-    sessionKey,
+  downloadVideos: function({
+    excercises,
     success
   }) {
+    wx.showLoading({
+      title: '资源加载中,请稍后...',
+      mask: true
+    })
     wx.getSavedFileList({
       //缓存空间清理
       success: res => {
@@ -160,25 +163,40 @@ var config = {
         }
       }
     })
-    wx.downloadFile({
-      url: url,
-      success: function(res) {
-        wx.saveFile({
-          tempFilePath: res.tempFilePath,
-          success: function(res) {
-            wx.setStorage({
-              key: sessionKey + '',
-              data: res.savedFilePath,
-              success: function() {
-                console.log("缓存成功")
-                success(res)
-              }
-            })
-          }
-        })
+    var done = this.after(excercises.length, success);
+    for (var i in excercises) {
+      let exc = excercises[i];
+      wx.downloadFile({
+        url: exc.videoUrl,
+        success: function(res) {
+          wx.saveFile({
+            tempFilePath: res.tempFilePath,
+            success: function(res) {
+              wx.setStorage({
+                key: exc.videoId + '',
+                data: res.savedFilePath,
+                success: function() {
+                  console.log("缓存成功")
+                  done();
+                }
+              })
+            },
+            fail: function() {
+              done()
+            }
+          })
+        }
+      })
+    }
+  },
+  after: function(times, callback) {
+    var count = 0;
+    return function() {
+      if (++count === times) {
+        callback();
       }
-    })
-  }
+    }
+  },
 
 };
 module.exports = config
