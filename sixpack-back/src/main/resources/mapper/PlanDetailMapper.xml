@@ -70,13 +70,13 @@
   </select>
   
   <!-- by troytan:获取训练日详情 -->
-  <resultMap type="com.troytan.sixpack.dto.PlanDetailDto" id="PlanDetailDtoResultMap">
+  <resultMap id="PlanDetailDtoResultMap" type="com.troytan.sixpack.dto.PlanDetailDto">
     <id column="PLAN_ID" jdbcType="INTEGER" property="planId" />
     <result column="LEVEL" jdbcType="SMALLINT" property="level" />
     <result column="TRAINING_DAY" jdbcType="SMALLINT" property="trainingDay" />
     <result column="COST" jdbcType="VARCHAR" property="cost" />
     <result column="VOCATION" jdbcType="BIT" property="vocation" />
-    <collection property="excercises" ofType="com.troytan.sixpack.dto.Excercise">
+    <collection ofType="com.troytan.sixpack.dto.Excercise" property="excercises">
 	    <id column="VIDEO_ID" jdbcType="INTEGER" property="videoId" />
 	    <result column="REPETITIONS" jdbcType="SMALLINT" property="repetitions" />
 	    <result column="SETS" jdbcType="SMALLINT" property="sets" />

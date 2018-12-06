@@ -64,6 +64,7 @@ public class PlanServiceImpl implements PlanService {
         UserPlan userPlan = userPlanMapper.selectByPlanAndUser(planId, userId);
         if (userPlan != null) {
             userPlan.setStatus(status);
+            userPlan.setUpdateBy(userId);
             userPlanMapper.updateByPrimaryKey(userPlan);
         } else {
             userPlan = new UserPlan();
