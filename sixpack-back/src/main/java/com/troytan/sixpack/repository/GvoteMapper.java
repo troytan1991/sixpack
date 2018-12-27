@@ -73,24 +73,9 @@ public interface GvoteMapper {
      * @param gvoteId
      */
     void deleteByUserAndId(@Param("userId") Integer userId, @Param("gvoteId") Integer gvoteId);
+    
+    List<Integer> listIdByOwner(Integer userId);
 
-    /**
-     * 发送列表
-     *
-     * @author troytan
-     * @date 2018年12月26日
-     * @param currentUser
-     * @return
-     */
-    List<GvoteResultTitle> listSendVoteByUser(@Param("userId")Integer userId);
+    List<GvoteResultTitle> listVoteByIds(List<Integer> ids);
 
-    /**
-     * 接收列表
-     *
-     * @author troytan
-     * @date 2018年12月26日
-     * @param currentUser
-     * @return
-     */
-    List<GvoteResultTitle> listReceiveVoteByUser(Integer currentUser);
 }

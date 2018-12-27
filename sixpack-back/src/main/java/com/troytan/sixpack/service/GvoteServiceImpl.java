@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.troytan.sixpack.domain.Gvote;
+import com.troytan.sixpack.domain.GvoteReceive;
 import com.troytan.sixpack.domain.GvoteResult;
 import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.GvoteDto;
@@ -15,6 +16,7 @@ import com.troytan.sixpack.dto.GvoteResultTitle;
 import com.troytan.sixpack.exception.RequestException;
 import com.troytan.sixpack.repository.GvoteItemMapper;
 import com.troytan.sixpack.repository.GvoteMapper;
+import com.troytan.sixpack.repository.GvoteReceiveMapper;
 import com.troytan.sixpack.repository.GvoteResultMapper;
 
 @Service
@@ -22,13 +24,16 @@ import com.troytan.sixpack.repository.GvoteResultMapper;
 public class GvoteServiceImpl implements GvoteService {
 
     @Autowired
-    private GvoteMapper       voteMapper;
+    private GvoteMapper        voteMapper;
     @Autowired
-    private GvoteItemMapper   itemMapper;
+    private GvoteItemMapper    itemMapper;
     @Autowired
-    private GvoteResultMapper resultMapper;
+    private GvoteResultMapper  resultMapper;
     @Autowired
-    private UserService       userService;
+    private GvoteReceiveMapper receiveMapper;
+
+    @Autowired
+    private UserService        userService;
 
     /**
      * 投票主题新建
@@ -64,15 +69,27 @@ public class GvoteServiceImpl implements GvoteService {
     @Override
     public void userVote(List<GvoteResult> voteResults, Integer gvoteId) {
         int userId = userService.getCurrentUser();
+        // 校验投票是否已结束
         Gvote gvote = voteMapper.selectByPrimaryKey(gvoteId);
         if (gvote.getFinished()) {
             throw new RequestException("投票已结束");
         }
+        // 投票记录表
         voteResults.forEach(item -> {
-            item.setCreateBy(userId);
             item.setUserId(userId);
             resultMapper.insert(item);
         });
+        // 接收表记录
+        if (gvote.getOwner() != userId) {
+            // 如果不为owner，新增接收记录
+            GvoteReceive receive = new GvoteReceive();
+            receive.setCreateBy(userId);
+            receive.setDeleted(false);
+            receive.setGvoteId(gvoteId);
+            receive.setUserId(userId);
+
+            receiveMapper.insert(receive);
+        }
     }
 
     /**
@@ -152,8 +169,8 @@ public class GvoteServiceImpl implements GvoteService {
      */
     @Override
     public List<GvoteResultTitle> getSendVotes() {
-
-        return voteMapper.listSendVoteByUser(userService.getCurrentUser());
+        List<Integer> ids = voteMapper.listIdByOwner(userService.getCurrentUser());
+        return voteMapper.listVoteByIds(ids);
     }
 
     /**
@@ -166,8 +183,8 @@ public class GvoteServiceImpl implements GvoteService {
      */
     @Override
     public List<GvoteResultTitle> getReceiveVotes() {
-
-        return voteMapper.listReceiveVoteByUser(userService.getCurrentUser());
+        List<Integer> ids = receiveMapper.listIdByReceiver(userService.getCurrentUser());
+        return voteMapper.listVoteByIds(ids);
     }
 
     /**
