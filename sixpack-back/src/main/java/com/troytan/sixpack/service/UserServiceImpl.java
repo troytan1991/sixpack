@@ -17,6 +17,7 @@ import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.OauthDto;
 import com.troytan.sixpack.dto.UserDto;
 import com.troytan.sixpack.dto.UserSessionDto;
+import com.troytan.sixpack.exception.BusinessException;
 import com.troytan.sixpack.repository.GroupUserMapper;
 import com.troytan.sixpack.repository.UserMapper;
 import com.troytan.sixpack.repository.VoteSubjectMapper;
@@ -246,6 +247,30 @@ public class UserServiceImpl implements UserService {
             groupUserMapper.insert(groupUser);
         }
         return groupId;
+    }
+
+    /**
+     * 解密groupId
+     *
+     * @author troytan
+     * @date 2018年12月27日
+     * @param groupDto
+     * @return (non-Javadoc)
+     * @throws Exception
+     * @see com.troytan.sixpack.service.UserService#decreptGroupId(com.troytan.sixpack.dto.GroupDto)
+     */
+    @Override
+    public String decreptGroupId(GroupDto groupDto) {
+        UserSessionDto sessionDto = userHolder.get();
+        // 解密群ID
+        String result = null;
+        try {
+            result = AESUtils.decrypt(groupDto.getEncryptedData(), groupDto.getIv(), sessionDto.getSessionKey());
+        } catch (Exception e) {
+            throw new BusinessException("解密算法出错");
+        }
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(result);
+        return jsonObject.get("openGId").getAsString();
     }
 
     @Override

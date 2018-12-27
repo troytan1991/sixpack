@@ -44,6 +44,4 @@ public interface GvoteResultMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(GvoteResult record);
-
-    int countUserVote(Integer gvoteId, Integer currentUser);
 }

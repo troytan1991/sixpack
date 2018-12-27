@@ -28,6 +28,8 @@ public interface UserService {
 
     String registerGroupUser(GroupDto groupDto) throws Exception;
 
+    String decreptGroupId(GroupDto groupDto);
+
     User getUser();
 
 }

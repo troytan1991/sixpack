@@ -1,6 +1,8 @@
 package com.troytan.sixpack.repository;
 
 import com.troytan.sixpack.domain.GvoteItem;
+import com.troytan.sixpack.dto.GvoteItemResult;
+
 import java.util.List;
 
 public interface GvoteItemMapper {
@@ -43,4 +45,6 @@ public interface GvoteItemMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(GvoteItem record);
+
+    List<GvoteItemResult> listResultByVoteId(Integer gvoteId);
 }

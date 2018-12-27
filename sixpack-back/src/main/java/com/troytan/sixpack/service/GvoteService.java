@@ -20,14 +20,15 @@ public interface GvoteService {
 
     void finishVote(Integer gvoteId);
 
-    String registerGroup(GroupDto groupDto) throws Exception;
-
     List<GvoteResultTitle> getSendVotes();
 
     List<GvoteResultTitle> getReceiveVotes();
 
     void deleteVote(Integer gvoteId);
 
-    Boolean checkVoted(Integer gvoteId);
+    void deleteReceiveVote(Integer gvoteId);
 
+    Short checkVote(Integer gvoteId, String groupId);
+
+    String updateGroupId(Integer gvoteId, GroupDto groupDto);
 }

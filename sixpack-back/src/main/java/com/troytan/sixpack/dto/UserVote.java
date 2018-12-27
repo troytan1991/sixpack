@@ -10,9 +10,10 @@ import java.util.Date;
  */
 public class UserVote {
 
-    private String url;
-    private String nickName;
-    private Date   voteTime;
+    private Integer userId;
+    private String  url;
+    private String  nickName;
+    private Date    voteTime;
 
     public String getUrl() {
         return url;
@@ -36,6 +37,14 @@ public class UserVote {
 
     public void setVoteTime(Date voteTime) {
         this.voteTime = voteTime;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
 }

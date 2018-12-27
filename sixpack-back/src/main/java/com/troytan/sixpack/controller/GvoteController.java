@@ -101,21 +101,6 @@ public class GvoteController {
     }
 
     /**
-     * 关联群组
-     *
-     * @author troytan
-     * @date 2018年12月26日
-     * @param groupDto
-     * @return
-     * @throws Exception
-     */
-    @PutMapping("/group")
-    public String registerGroup(@RequestBody GroupDto groupDto) throws Exception {
-
-        return gvoteService.registerGroup(groupDto);
-    }
-
-    /**
      * 获取发送列表
      *
      * @author troytan
@@ -141,7 +126,7 @@ public class GvoteController {
     }
 
     /**
-     * 删除投票
+     * 删除发起的投票
      *
      * @author troytan
      * @date 2018年12月26日
@@ -154,16 +139,30 @@ public class GvoteController {
     }
 
     /**
-     * 判断是否已投票
+     * 删除接收的投票
+     *
+     * @author troytan
+     * @date 2018年12月27日
+     * @param gvoteId
+     */
+    @DeleteMapping("/receive/{gvoteId}")
+    public void deleteReceiveVote(@PathVariable("gvoteId") Integer gvoteId) {
+
+        gvoteService.deleteReceiveVote(gvoteId);
+    }
+
+    /**
+     * 校验访问权限
      *
      * @author troytan
      * @date 2018年12月26日
      * @param gvoteId
      * @return
      */
-    @GetMapping("/voted/{gvoteId}")
-    public Boolean isVoted(@PathVariable("gvoteId") Integer gvoteId) {
-        return gvoteService.checkVoted(gvoteId);
+    @GetMapping("/check/{gvoteId}")
+    public Short voteCheck(@PathVariable("gvoteId") Integer gvoteId, @RequestBody GroupDto groupDto) {
+        String groupId = gvoteService.updateGroupId(gvoteId, groupDto);
+        return gvoteService.checkVote(gvoteId, groupId);
     }
 
 }

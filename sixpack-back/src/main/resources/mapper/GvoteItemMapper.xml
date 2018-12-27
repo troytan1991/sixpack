@@ -56,4 +56,26 @@
     select GVOTE_ITEM_ID, GVOTE_ID, CONTENT
     from tt_gvote_item
   </select>
+  
+  <!-- 查询选项投票结果 -->
+  <resultMap id="ItemResultMap" type="com.troytan.sixpack.dto.GvoteItemResult">
+    <id column="GVOTE_ITEM_ID" jdbcType="INTEGER" property="itemId" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <collection ofType="com.troytan.sixpack.dto.UserVote" property="userVotes">
+        <id column="USER_ID" jdbcType="INTEGER" property="userId" />
+        <result column="AVATAR_URL" jdbcType="VARCHAR" property="url" />
+        <result column="NICKNAME" jdbcType="VARCHAR" property="nickName" />
+        <result column="VOTE_TIME" jdbcType="TIMESTAMP" property="voteTime" />
+    </collection>
+  </resultMap>
+  <select id="listResultByVoteId" parameterType="Integer" reusltMap="ItemResultMap">
+    select item.GVOTE_ITEM_ID, item.CONTENT, 
+       user.USER_ID, user.AVATAR_URL, user.NICKNAME, receive.CREATE_ON as VOTE_TIME
+	from tt_gvote_item item
+	left join tr_gvote_result result on result.GVOTE_ITEM_ID = item.GVOTE_ITEM_ID
+	left join tm_user user on user.USER_ID = result.USER_ID
+	left join tt_gvote_receive receive on receive.GVOTE_ID=item.GVOTE_ID and receive.USER_ID = result.USER_ID
+	where item.GVOTE_ID=#{gvoteId, jdbcType=INTEGER}
+	order by GVOTE_ITEM_ID
+  </select>
 </mapper>

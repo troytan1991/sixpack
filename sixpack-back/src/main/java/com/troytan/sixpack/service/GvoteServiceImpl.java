@@ -1,16 +1,19 @@
 package com.troytan.sixpack.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.troytan.sixpack.constant.BusinessConst;
 import com.troytan.sixpack.domain.Gvote;
 import com.troytan.sixpack.domain.GvoteReceive;
 import com.troytan.sixpack.domain.GvoteResult;
 import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.GvoteDto;
+import com.troytan.sixpack.dto.GvoteItemResult;
 import com.troytan.sixpack.dto.GvoteResultDto;
 import com.troytan.sixpack.dto.GvoteResultTitle;
 import com.troytan.sixpack.exception.RequestException;
@@ -71,25 +74,22 @@ public class GvoteServiceImpl implements GvoteService {
         int userId = userService.getCurrentUser();
         // 校验投票是否已结束
         Gvote gvote = voteMapper.selectByPrimaryKey(gvoteId);
-        if (gvote.getFinished()) {
+        if (gvote.getStatus().equals(BusinessConst.VOTE_STATUS_FINISHED)) {
             throw new RequestException("投票已结束");
         }
-        // 投票记录表
+        // tt_gvote_result表
         voteResults.forEach(item -> {
             item.setUserId(userId);
             resultMapper.insert(item);
         });
-        // 接收表记录
-        if (gvote.getOwner() != userId) {
-            // 如果不为owner，新增接收记录
-            GvoteReceive receive = new GvoteReceive();
-            receive.setCreateBy(userId);
-            receive.setDeleted(false);
-            receive.setGvoteId(gvoteId);
-            receive.setUserId(userId);
+        // tt_gvote_receive表
+        GvoteReceive receive = new GvoteReceive();
+        receive.setCreateBy(userId);
+        receive.setDeleted(false);
+        receive.setGvoteId(gvoteId);
+        receive.setUserId(userId);
 
-            receiveMapper.insert(receive);
-        }
+        receiveMapper.insert(receive);
     }
 
     /**
@@ -103,8 +103,16 @@ public class GvoteServiceImpl implements GvoteService {
      */
     @Override
     public GvoteResultDto getVoteResult(Integer gvoteId) {
-        // TODO Auto-generated method stub
-        return null;
+        // 获取投票头信息
+        int userId = userService.getCurrentUser();
+        GvoteResultDto result = voteMapper.selectVoteDetail(gvoteId);
+        List<GvoteItemResult> itemResults = itemMapper.listResultByVoteId(gvoteId);
+        itemResults.forEach(item -> {
+            List<Integer> userIds = item.getUserVotes().stream().map(userVote -> userVote.getUserId()).collect(Collectors.toList());
+            item.setMyVote(userIds.contains(userId));
+        });
+        result.setItemResults(itemResults);
+        return result;
     }
 
     /**
@@ -133,30 +141,7 @@ public class GvoteServiceImpl implements GvoteService {
     @Override
     public void finishVote(Integer gvoteId) {
 
-        voteMapper.finishVote(gvoteId);
-    }
-
-    /**
-     * 关联投票主题与群Id
-     *
-     * @author troytan
-     * @date 2018年12月26日
-     * @param groupDto
-     * @return (non-Javadoc)
-     * @throws Exception
-     * @see com.troytan.sixpack.service.GvoteService#registerGroup(com.troytan.sixpack.dto.GroupDto)
-     */
-    @Override
-    public String registerGroup(GroupDto groupDto) throws Exception {
-        String groupId = userService.registerGroupUser(groupDto);
-        Gvote gvote = voteMapper.selectByPrimaryKey(groupDto.getGvoteId());
-        if (gvote.getGroupId() == null) {
-            gvote.setGroupId(groupId);
-            gvote.setUpdateBy(userService.getCurrentUser());
-
-            voteMapper.updateByPrimaryKey(gvote);
-        }
-        return groupId;
+        voteMapper.updateStatusByUserAndId(userService.getCurrentUser(), gvoteId, BusinessConst.VOTE_STATUS_FINISHED);
     }
 
     /**
@@ -197,22 +182,88 @@ public class GvoteServiceImpl implements GvoteService {
      */
     @Override
     public void deleteVote(Integer gvoteId) {
-        voteMapper.deleteByUserAndId(userService.getCurrentUser(), gvoteId);
+        voteMapper.updateStatusByUserAndId(userService.getCurrentUser(), gvoteId, BusinessConst.VOTE_STATUS_DELETED);
     }
 
     /**
-     * 校验是否已投票
+     * 删除接收的投票
      *
      * @author troytan
-     * @date 2018年12月26日
-     * @param gvoteId
-     * @return (non-Javadoc)
-     * @see com.troytan.sixpack.service.GvoteService#checkVoted(java.lang.Integer)
+     * @date 2018年12月27日
+     * @param gvoteId (non-Javadoc)
+     * @see com.troytan.sixpack.service.GvoteService#deleteReceiveVote(java.lang.Integer)
      */
     @Override
-    public Boolean checkVoted(Integer gvoteId) {
-        int count = resultMapper.countUserVote(gvoteId, userService.getCurrentUser());
-        return count > 0 ? true : false;
+    public void deleteReceiveVote(Integer gvoteId) {
+        receiveMapper.deleteByUserAndId(userService.getCurrentUser(), gvoteId);
+    }
+
+    /**
+     * 校验投票状态
+     *
+     * @author troytan
+     * @date 2018年12月27日
+     * @param gvoteId
+     * @param groupId
+     * @return (non-Javadoc)
+     * @see com.troytan.sixpack.service.GvoteService#checkVote(java.lang.Integer, java.lang.String)
+     */
+    @Override
+    public Short checkVote(Integer gvoteId, String groupId) {
+        int userId = userService.getCurrentUser();
+        Gvote vote = voteMapper.selectByPrimaryKey(gvoteId);
+        // 获取投票记录
+        int count = receiveMapper.countByUserAndVoteId(userService.getCurrentUser(), gvoteId);
+        if (groupId == null || vote.getGroupId().equals(groupId)) {
+            // groupId不匹配
+            if (!vote.getOwner().equals(userId) && count <= 0) {
+                // 不是onwer或者接收列表不存在,则无权限访问
+                return BusinessConst.VOTE_STATUS_NOAUTH;
+            }
+        }
+        if (vote.getStatus().equals(BusinessConst.VOTE_STATUS_DELETED)) {
+            // vote已删除
+            return BusinessConst.VOTE_STATUS_DELETED;
+        }
+        if (vote.getStatus().equals(BusinessConst.VOTE_STATUS_FINISHED)) {
+            // vote已结束
+            return BusinessConst.VOTE_STATUS_FINISHED;
+        }
+        if (count > 0) {
+            // 已投票
+            return BusinessConst.VOTE_STATUS_VOTED;
+        }
+        // 未投票
+        return BusinessConst.VOTE_STATUS_UNVOTE;
+    }
+
+    /**
+     * 更新groupId
+     *
+     * @author troytan
+     * @date 2018年12月27日
+     * @param gvoteId
+     * @param groupDto
+     * @return (non-Javadoc)
+     * @throws Exception
+     * @see com.troytan.sixpack.service.GvoteService#updateGroupId(java.lang.Integer, com.troytan.sixpack.dto.GroupDto)
+     */
+    @Override
+    public String updateGroupId(Integer gvoteId, GroupDto groupDto) {
+        if (groupDto == null) {
+            // groupDto为空，表示从发送/接收列表中进入
+            return null;
+        }
+        String groupId = userService.decreptGroupId(groupDto);
+        Gvote gvote = voteMapper.selectByPrimaryKey(gvoteId);
+        if (gvote.getGroupId() == null) {
+            gvote.setGroupId(groupId);
+            gvote.setUpdateBy(userService.getCurrentUser());
+
+            voteMapper.updateByPrimaryKey(gvote);
+            return groupId;
+        }
+        return gvote.getGroupId();
     }
 
 }

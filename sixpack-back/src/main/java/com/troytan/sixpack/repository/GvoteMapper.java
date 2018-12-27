@@ -56,26 +56,35 @@ public interface GvoteMapper {
     GvoteResultDto selectVoteDetail(Integer gvoteId);
 
     /**
-     * 更新finished字段状态
+     * 根据owner获取voteId
      *
      * @author troytan
-     * @date 2018年12月26日
-     * @param gvoteId
+     * @date 2018年12月27日
+     * @param userId
+     * @return
      */
-    void finishVote(Integer gvoteId);
-
-    /**
-     * 软删除
-     *
-     * @author troytan
-     * @date 2018年12月26日
-     * @param currentUser
-     * @param gvoteId
-     */
-    void deleteByUserAndId(@Param("userId") Integer userId, @Param("gvoteId") Integer gvoteId);
-    
     List<Integer> listIdByOwner(Integer userId);
 
+    /**
+     * 根据Id获取结果列表
+     *
+     * @author troytan
+     * @date 2018年12月27日
+     * @param ids
+     * @return
+     */
     List<GvoteResultTitle> listVoteByIds(List<Integer> ids);
+
+    /**
+     * 更新状态
+     *
+     * @author troytan
+     * @date 2018年12月27日
+     * @param userId
+     * @param gvoteId
+     * @param status
+     */
+    void updateStatusByUserAndId(@Param("userId") Integer userId, @Param("gvoteId") Integer gvoteId,
+                                 @Param("status") short status);
 
 }

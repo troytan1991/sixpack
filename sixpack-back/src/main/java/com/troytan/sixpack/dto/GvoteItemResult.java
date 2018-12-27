@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class GvoteItemResult {
 
-    private Integer        itemId;  // 选项ID
-    private String         content; // 选项内容
-    private List<UserVote> users;   // 所有投票用户
-    private Boolean        myVote;  // 自己是否投的该项
-    private Float          weight;  // 所占比重
+    private Integer        itemId;    // 选项ID
+    private String         content;   // 选项内容
+    private List<UserVote> userVotes; // 所有投票用户
+    private Boolean        myVote;    // 自己是否投的该项
+    private String         weight;    // 所占比重
 
     public Integer getItemId() {
         return itemId;
@@ -32,14 +32,6 @@ public class GvoteItemResult {
         this.content = content;
     }
 
-    public List<UserVote> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserVote> users) {
-        this.users = users;
-    }
-
     public Boolean getMyVote() {
         return myVote;
     }
@@ -48,11 +40,19 @@ public class GvoteItemResult {
         this.myVote = myVote;
     }
 
-    public Float getWeight() {
+    public List<UserVote> getUserVotes() {
+        return userVotes;
+    }
+
+    public void setUserVotes(List<UserVote> userVotes) {
+        this.userVotes = userVotes;
+    }
+
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 

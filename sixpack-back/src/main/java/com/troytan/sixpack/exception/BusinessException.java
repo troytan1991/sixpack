@@ -32,7 +32,7 @@ package com.troytan.sixpack.exception;
  * @date 2018年7月31日
  */
 
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
 
     private static final long serialVersionUID = 7626219528013526739L;
 

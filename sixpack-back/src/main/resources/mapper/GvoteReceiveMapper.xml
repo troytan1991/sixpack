@@ -70,4 +70,23 @@
     select RECEIVE_ID, USER_ID, GVOTE_ID, DELETED, CREATE_BY, CREATE_ON, UPDATE_BY, UPDATE_ON
     from tt_gvote_receive
   </select>
+  
+  <select id="listIdByReceiver" parameterType="Integer" resultType="Integer">
+    select GVOTE_ID 
+    from tt_gvote_receive
+    where USER_ID=#{userId, jdbcType=INTEGER}
+        and DELETED = false
+  </select>
+  
+  <update id="deleteByUserAndId">
+    update tt_gvote_receive
+    set DELETED = true
+    where where USER_ID=#{userId, jdbcType=INTEGER} 
+        and GVOTE_ID=#{gvoteId, jdbcType=INTEGER}
+  </update>
+  <select id="countByUserAndVoteId" resultType="int">
+    select count(1) from tt_gvote_receive
+    where USER_ID = #{userId, jdbcType=INTEGER} 
+        and GVOTE_ID =#{gvoteId, jdbcType=INTEGER}
+  </select>
 </mapper>
