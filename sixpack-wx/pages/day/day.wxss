@@ -118,5 +118,5 @@
 
 .selected {
   border: 2rpx solid red;
-  box-shadow: 0 0 5rpx 5rpx red;
+  box-shadow: 0 0 5rpx 0 red;
 }

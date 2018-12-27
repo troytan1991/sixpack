@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.troytan.sixpack</groupId>
 	<artifactId>sixpack</artifactId>
-	<version>v2.0</version>
+	<version>v2.1</version>
 	<packaging>war</packaging>
 
 	<parent>

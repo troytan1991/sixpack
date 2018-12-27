@@ -52,17 +52,27 @@
 		<!-- <generatedKey column="GROUP_USER_ID" sqlStatement="MySql" -->
 		<!-- identity="true" /> -->
 		<!-- </table> -->
-		<table tableName="TM_PLAN" domainObjectName="Plan">
-			<generatedKey column="PLAN_ID" sqlStatement="MySql"
+		<!-- <table tableName="TM_PLAN" domainObjectName="Plan"> -->
+		<!-- <generatedKey column="PLAN_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TM_PLAN_DETAIL" domainObjectName="PlanDetail"> -->
+		<!-- <generatedKey column="PLAN_DETAIL_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<!-- <table tableName="TT_USER_PLAN" domainObjectName="UserPlan"> -->
+		<!-- <generatedKey column="USER_PLAN_ID" sqlStatement="MySql" -->
+		<!-- identity="true" /> -->
+		<!-- </table> -->
+		<table tableName="TT_GVOTE" domainObjectName="Gvote">
+			<generatedKey column="GVOTE_ID" sqlStatement="MySql"
 				identity="true" />
 		</table>
-		<table tableName="TM_PLAN_DETAIL" domainObjectName="PlanDetail">
-            <generatedKey column="PLAN_DETAIL_ID" sqlStatement="MySql"
-                identity="true" />
-        </table>
-        <table tableName="TT_USER_PLAN" domainObjectName="UserPlan">
-            <generatedKey column="USER_PLAN_ID" sqlStatement="MySql"
-                identity="true" />
-        </table>
+		<table tableName="TT_GVOTE_ITEM" domainObjectName="GvoteItem">
+			<generatedKey column="GVOTE_ITEM_ID" sqlStatement="MySql"
+				identity="true" />
+		</table>
+		<table tableName="TT_GVOTE_RESULT" domainObjectName="GvoteResult">
+		</table>
 	</context>
 </generatorConfiguration>

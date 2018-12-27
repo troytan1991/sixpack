@@ -6,6 +6,7 @@ public class GroupDto {
     private String  iv;            // 初始向量
     private Integer subjectId;     // 投票ID
     private Integer debateId;      // 辩论Id
+    private Integer gvoteId;       // 群投票ID
 
     public String getEncryptedData() {
         return encryptedData;
@@ -37,6 +38,14 @@ public class GroupDto {
 
     public void setDebateId(Integer debateId) {
         this.debateId = debateId;
+    }
+
+    public Integer getGvoteId() {
+        return gvoteId;
+    }
+
+    public void setGvoteId(Integer gvoteId) {
+        this.gvoteId = gvoteId;
     }
 
 }

@@ -31,15 +31,15 @@ Page({
           currentExc: detail.vocation ? {} : detail.excercises[0],
           videoContext: wx.createVideoContext('videoId')
         });
-        if (!detail.vocation) {
-          config.downloadVideos({
-            excercises: detail.excercises,
-            success: function() {
-              wx.hideLoading()
-              that.loadVideo();
-            }
-          })
-        }
+        // if (!detail.vocation) {
+        //   config.downloadVideos({
+        //     excercises: detail.excercises,
+        //     success: function() {
+        //       wx.hideLoading()
+        //       that.loadVideo();
+        //     }
+        //   })
+        // }
       }
     })
   },

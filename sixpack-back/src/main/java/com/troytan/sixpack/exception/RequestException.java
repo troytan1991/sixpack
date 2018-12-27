@@ -32,7 +32,7 @@ package com.troytan.sixpack.exception;
  * @date 2018年7月31日
  */
 
-public class RequestException extends Exception {
+public class RequestException extends RuntimeException {
 
     private static final long serialVersionUID = 664393041374310799L;
 

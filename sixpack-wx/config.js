@@ -1,6 +1,6 @@
-// var root = "https://troytan.club/sixpack/rest"; //prod
+var root = "https://troytan.club/sixpack/rest"; //prod
 // var root = "http://106.14.134.6:8081/sixpack/rest"; //qa
-var root = "http://localhost:8080/sixpack/rest"; //dev
+// var root = "http://localhost:8080/sixpack/rest"; //dev
 var config = {
   loginUrl: `${root}/user/login`,
   updateUserUrl: `${root}/user`,
@@ -142,8 +142,9 @@ var config = {
     excercises,
     success
   }) {
+    var process = 0;
     wx.showLoading({
-      title: '资源加载中,请稍后...',
+      title: '资源加载中:' + process,
       mask: true
     })
     wx.getSavedFileList({
@@ -177,6 +178,10 @@ var config = {
                 data: res.savedFilePath,
                 success: function() {
                   console.log("缓存成功")
+                  process += 1
+                  wx.showLoading({
+                    title: '资源加载中:' + process,
+                  })
                   done();
                 }
               })
