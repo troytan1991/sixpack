@@ -74,6 +74,24 @@ public class WechatManager {
             return null;
         }
     }
+    /**
+     * 投投是道小程序
+     *
+     * @author troytan
+     * @date 2018年12月28日
+     * @param code
+     * @return
+     */
+    public OauthDto requestGvoteOauth(String code) {
+        String response = restTemplate.getForObject(oauthUrl + "?appid={1}&secret={2}&js_code={3}&grant_type={4}",
+                                                    String.class, "wxf16b6adb67d33eee",
+                                                    "ba312ecea840ec4eb46e5e5f626327c1", code, "authorization_code");
+        try {
+            return new ObjectMapper().readValue(response, OauthDto.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     /**
      * 发送模版消息
@@ -120,4 +138,6 @@ public class WechatManager {
         JsonObject jsonObject = (JsonObject) new JsonParser().parse(response);
         return jsonObject.get("access_token").getAsString();
     }
+
+    
 }

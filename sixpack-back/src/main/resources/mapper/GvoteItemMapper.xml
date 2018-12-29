@@ -68,7 +68,7 @@
         <result column="VOTE_TIME" jdbcType="TIMESTAMP" property="voteTime" />
     </collection>
   </resultMap>
-  <select id="listResultByVoteId" parameterType="Integer" reusltMap="ItemResultMap">
+  <select id="listResultByVoteId" parameterType="Integer" resultMap="ItemResultMap">
     select item.GVOTE_ITEM_ID, item.CONTENT, 
        user.USER_ID, user.AVATAR_URL, user.NICKNAME, receive.CREATE_ON as VOTE_TIME
 	from tt_gvote_item item

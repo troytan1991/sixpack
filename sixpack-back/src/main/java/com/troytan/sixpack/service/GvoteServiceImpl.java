@@ -1,5 +1,6 @@
 package com.troytan.sixpack.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,10 @@ public class GvoteServiceImpl implements GvoteService {
     @Override
     public Integer saveVote(GvoteDto voteDto) {
         // tt_gvote表
+        int userId = userService.getCurrentUser();
+        voteDto.setOwner(userId);
+        voteDto.setCreateBy(userId);
+        voteDto.setStatus(BusinessConst.VOTE_STATUS_UNVOTE);
         voteMapper.insert(voteDto);
         // tt_gvote_item表
         voteDto.getVoteItems().forEach(item -> {
@@ -112,6 +117,9 @@ public class GvoteServiceImpl implements GvoteService {
             item.setMyVote(userIds.contains(userId));
         });
         result.setItemResults(itemResults);
+        int totalNum = receiveMapper.countByVoteId(gvoteId);
+        result.setTotalNum(totalNum);
+        result.setIsAdmin(result.getOwner().equals(userId));
         return result;
     }
 
@@ -126,8 +134,11 @@ public class GvoteServiceImpl implements GvoteService {
      */
     @Override
     public GvoteResultDto getVoteDetail(Integer gvoteId) {
-
-        return voteMapper.selectVoteDetail(gvoteId);
+        GvoteResultDto result = voteMapper.selectVoteDetail(gvoteId);
+        int totalNum = receiveMapper.countByVoteId(gvoteId);
+        result.setTotalNum(totalNum);
+        result.setIsAdmin(result.getOwner().equals(userService.getCurrentUser()));
+        return result;
     }
 
     /**
@@ -155,6 +166,9 @@ public class GvoteServiceImpl implements GvoteService {
     @Override
     public List<GvoteResultTitle> getSendVotes() {
         List<Integer> ids = voteMapper.listIdByOwner(userService.getCurrentUser());
+        if (ids.isEmpty()) {
+            return null;
+        }
         return voteMapper.listVoteByIds(ids);
     }
 
@@ -169,6 +183,9 @@ public class GvoteServiceImpl implements GvoteService {
     @Override
     public List<GvoteResultTitle> getReceiveVotes() {
         List<Integer> ids = receiveMapper.listIdByReceiver(userService.getCurrentUser());
+        if (ids.isEmpty()) {
+            return null;
+        }
         return voteMapper.listVoteByIds(ids);
     }
 
@@ -214,7 +231,7 @@ public class GvoteServiceImpl implements GvoteService {
         Gvote vote = voteMapper.selectByPrimaryKey(gvoteId);
         // 获取投票记录
         int count = receiveMapper.countByUserAndVoteId(userService.getCurrentUser(), gvoteId);
-        if (groupId == null || vote.getGroupId().equals(groupId)) {
+        if (groupId == null || vote.getGroupId() == null || !vote.getGroupId().equals(groupId)) {
             // groupId不匹配
             if (!vote.getOwner().equals(userId) && count <= 0) {
                 // 不是onwer或者接收列表不存在,则无权限访问

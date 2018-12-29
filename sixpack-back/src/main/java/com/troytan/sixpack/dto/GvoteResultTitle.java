@@ -7,6 +7,7 @@ public class GvoteResultTitle extends Gvote {
     private String  avatarUrl;
     private String  nickName;
     private Integer totalNum;
+    private Boolean isAdmin;
 
     public String getAvatarUrl() {
         return avatarUrl;
@@ -30,6 +31,14 @@ public class GvoteResultTitle extends Gvote {
 
     public void setTotalNum(Integer totalNum) {
         this.totalNum = totalNum;
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
 }

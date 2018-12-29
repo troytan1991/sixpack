@@ -125,6 +125,14 @@ public class UserController {
 
         return userService.logUser(oauthDto);
     }
+    
+    @PutMapping("/gvotelogin")
+    @NoAuth
+    public String getGvoteSessionId(@RequestParam("code") String code) {
+        OauthDto oauthDto = wechatManager.requestGvoteOauth(code);
+
+        return userService.logUser(oauthDto);
+    }
 
     /**
      * 更新用户信息

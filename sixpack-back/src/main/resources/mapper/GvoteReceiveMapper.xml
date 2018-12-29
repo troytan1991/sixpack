@@ -35,7 +35,7 @@
       CREATE_BY, CREATE_ON, UPDATE_BY, 
       UPDATE_ON)
     values (#{userId,jdbcType=INTEGER}, #{gvoteId,jdbcType=INTEGER}, #{deleted,jdbcType=BIT}, 
-      #{createBy,jdbcType=INTEGER}, #{createOn,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=INTEGER}, now(), #{updateBy,jdbcType=INTEGER}, 
       #{updateOn,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.troytan.sixpack.domain.GvoteReceive">
@@ -47,10 +47,8 @@
     set USER_ID = #{userId,jdbcType=INTEGER},
       GVOTE_ID = #{gvoteId,jdbcType=INTEGER},
       DELETED = #{deleted,jdbcType=BIT},
-      CREATE_BY = #{createBy,jdbcType=INTEGER},
-      CREATE_ON = #{createOn,jdbcType=TIMESTAMP},
       UPDATE_BY = #{updateBy,jdbcType=INTEGER},
-      UPDATE_ON = #{updateOn,jdbcType=TIMESTAMP}
+      UPDATE_ON = now()
     where RECEIVE_ID = #{receiveId,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -81,12 +79,16 @@
   <update id="deleteByUserAndId">
     update tt_gvote_receive
     set DELETED = true
-    where where USER_ID=#{userId, jdbcType=INTEGER} 
+    where USER_ID=#{userId, jdbcType=INTEGER} 
         and GVOTE_ID=#{gvoteId, jdbcType=INTEGER}
   </update>
   <select id="countByUserAndVoteId" resultType="int">
     select count(1) from tt_gvote_receive
     where USER_ID = #{userId, jdbcType=INTEGER} 
         and GVOTE_ID =#{gvoteId, jdbcType=INTEGER}
+  </select>
+  <select id="countByVoteId" resultType="int">
+    select count(USER_ID) from tt_gvote_receive
+    where GVOTE_ID =#{gvoteId, jdbcType=INTEGER}
   </select>
 </mapper>

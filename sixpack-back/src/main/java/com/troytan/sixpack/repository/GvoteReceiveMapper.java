@@ -55,4 +55,6 @@ public interface GvoteReceiveMapper {
     void deleteByUserAndId(@Param("userId") Integer userId, @Param("gvoteId") Integer gvoteId);
 
     int countByUserAndVoteId(@Param("userId") Integer userId, @Param("gvoteId") Integer gvoteId);
+
+    int countByVoteId(Integer gvoteId);
 }
