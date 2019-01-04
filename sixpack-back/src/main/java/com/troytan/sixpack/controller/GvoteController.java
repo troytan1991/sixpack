@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.troytan.sixpack.domain.GvoteResult;
 import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.GvoteDto;
 import com.troytan.sixpack.dto.GvoteResultDto;
 import com.troytan.sixpack.dto.GvoteResultTitle;
+import com.troytan.sixpack.dto.UserVote;
 import com.troytan.sixpack.service.GvoteService;
 
 /**
@@ -55,9 +55,9 @@ public class GvoteController {
      * @param gvoteId
      */
     @PutMapping("/{gvoteId}")
-    public void userVote(@RequestBody List<GvoteResult> voteResults, @PathVariable("/gvoteId") Integer gvoteId) {
+    public void userVote(@RequestBody List<Integer> itemIds, @PathVariable("gvoteId") Integer gvoteId) {
 
-        gvoteService.userVote(voteResults, gvoteId);
+        gvoteService.userVote(itemIds, gvoteId);
     }
 
     /**
@@ -159,10 +159,24 @@ public class GvoteController {
      * @param gvoteId
      * @return
      */
-    @GetMapping("/check/{gvoteId}")
+    @PostMapping("/check/{gvoteId}")
     public Short voteCheck(@PathVariable("gvoteId") Integer gvoteId, @RequestBody GroupDto groupDto) {
         String groupId = gvoteService.updateGroupId(gvoteId, groupDto);
         return gvoteService.checkVote(gvoteId, groupId);
+    }
+
+    /**
+     * 获取选项的投票人员
+     *
+     * @author troytan
+     * @date 2019年1月2日
+     * @param itemId
+     * @return
+     */
+    @GetMapping("/itemResult/{itemId}")
+    public List<UserVote> getItemUsers(@PathVariable("itemId") Integer itemId) {
+
+        return gvoteService.getItemUsers(itemId);
     }
 
 }

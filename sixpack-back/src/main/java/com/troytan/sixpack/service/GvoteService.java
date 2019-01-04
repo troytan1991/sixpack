@@ -2,17 +2,17 @@ package com.troytan.sixpack.service;
 
 import java.util.List;
 
-import com.troytan.sixpack.domain.GvoteResult;
 import com.troytan.sixpack.dto.GroupDto;
 import com.troytan.sixpack.dto.GvoteDto;
 import com.troytan.sixpack.dto.GvoteResultDto;
 import com.troytan.sixpack.dto.GvoteResultTitle;
+import com.troytan.sixpack.dto.UserVote;
 
 public interface GvoteService {
 
     Integer saveVote(GvoteDto voteDto);
 
-    void userVote(List<GvoteResult> voteResults, Integer gvoteId);
+    void userVote(List<Integer> itemIds, Integer gvoteId);
 
     GvoteResultDto getVoteResult(Integer gvoteId);
 
@@ -31,4 +31,6 @@ public interface GvoteService {
     Short checkVote(Integer gvoteId, String groupId);
 
     String updateGroupId(Integer gvoteId, GroupDto groupDto);
+
+    List<UserVote> getItemUsers(Integer itemId);
 }

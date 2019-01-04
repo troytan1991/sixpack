@@ -1,6 +1,8 @@
 package com.troytan.sixpack.repository;
 
 import com.troytan.sixpack.domain.GvoteResult;
+import com.troytan.sixpack.dto.UserVote;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -44,4 +46,6 @@ public interface GvoteResultMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(GvoteResult record);
+
+    List<UserVote> listByItemId(Integer itemId);
 }

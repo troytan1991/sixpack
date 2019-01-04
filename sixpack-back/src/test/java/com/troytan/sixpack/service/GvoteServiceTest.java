@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.troytan.sixpack.domain.GvoteItem;
-import com.troytan.sixpack.domain.GvoteResult;
 import com.troytan.sixpack.dto.GvoteDto;
 import com.troytan.sixpack.dto.GvoteResultDto;
 import com.troytan.sixpack.dto.GvoteResultTitle;
@@ -45,17 +44,6 @@ public class GvoteServiceTest {
         }
         vote.setVoteItems(items);
         gvoteService.saveVote(vote);
-    }
-
-    @Test
-    public void testUserVote() {
-        List<GvoteResult> gvoteResults = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            GvoteResult voteResult = new GvoteResult();
-            voteResult.setGvoteItemId(i + 1);
-            gvoteResults.add(voteResult);
-        }
-        gvoteService.userVote(gvoteResults, 1);
     }
 
     @Test

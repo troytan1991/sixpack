@@ -34,4 +34,14 @@
     select GVOTE_ITEM_ID, USER_ID
     from tr_gvote_result
   </select>
+  <select id="listByItemId" parameterType="Integer" resultType="com.troytan.sixpack.dto.UserVote">
+    select user.USER_ID,user.AVATAR_URL as url, 
+        user.NICKNAME as nickName, receive.CREATE_ON as voteTime
+    from tt_gvote_item item
+	join tr_gvote_result result on result.GVOTE_ITEM_ID=item.GVOTE_ITEM_ID
+	left join tt_gvote_receive receive on receive.GVOTE_ID = item.GVOTE_ID
+	left join tm_user user on user.USER_ID = result.USER_ID
+	where item.GVOTE_ITEM_ID=#{itemId, jdbcType=INTEGER}
+	order by receive.CREATE_ON
+  </select>
 </mapper>

@@ -14,7 +14,7 @@ public class GvoteItemResult {
     private String         content;   // 选项内容
     private List<UserVote> userVotes; // 所有投票用户
     private Boolean        myVote;    // 自己是否投的该项
-    private String         weight;    // 所占比重
+    private Float          weight;    // 所占比重
 
     public Integer getItemId() {
         return itemId;
@@ -48,11 +48,11 @@ public class GvoteItemResult {
         this.userVotes = userVotes;
     }
 
-    public String getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(Float weight) {
         this.weight = weight;
     }
 

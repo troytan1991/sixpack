@@ -1,6 +1,5 @@
 package com.troytan.sixpack.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +16,7 @@ import com.troytan.sixpack.dto.GvoteDto;
 import com.troytan.sixpack.dto.GvoteItemResult;
 import com.troytan.sixpack.dto.GvoteResultDto;
 import com.troytan.sixpack.dto.GvoteResultTitle;
+import com.troytan.sixpack.dto.UserVote;
 import com.troytan.sixpack.exception.RequestException;
 import com.troytan.sixpack.repository.GvoteItemMapper;
 import com.troytan.sixpack.repository.GvoteMapper;
@@ -75,7 +75,7 @@ public class GvoteServiceImpl implements GvoteService {
      * @see com.troytan.sixpack.service.GvoteService#userVote(java.util.List, java.lang.Integer)
      */
     @Override
-    public void userVote(List<GvoteResult> voteResults, Integer gvoteId) {
+    public void userVote(List<Integer> itemIds, Integer gvoteId) {
         int userId = userService.getCurrentUser();
         // 校验投票是否已结束
         Gvote gvote = voteMapper.selectByPrimaryKey(gvoteId);
@@ -83,10 +83,13 @@ public class GvoteServiceImpl implements GvoteService {
             throw new RequestException("投票已结束");
         }
         // tt_gvote_result表
-        voteResults.forEach(item -> {
+        for (Integer itemId : itemIds) {
+            GvoteResult item = new GvoteResult();
             item.setUserId(userId);
+            item.setGvoteItemId(itemId);
             resultMapper.insert(item);
-        });
+
+        }
         // tt_gvote_receive表
         GvoteReceive receive = new GvoteReceive();
         receive.setCreateBy(userId);
@@ -112,12 +115,14 @@ public class GvoteServiceImpl implements GvoteService {
         int userId = userService.getCurrentUser();
         GvoteResultDto result = voteMapper.selectVoteDetail(gvoteId);
         List<GvoteItemResult> itemResults = itemMapper.listResultByVoteId(gvoteId);
-        itemResults.forEach(item -> {
+        int totalNum = receiveMapper.countByVoteId(gvoteId);
+        int totalVotes = itemResults.stream().mapToInt(item -> item.getUserVotes().size()).sum();
+        for (GvoteItemResult item : itemResults) {
             List<Integer> userIds = item.getUserVotes().stream().map(userVote -> userVote.getUserId()).collect(Collectors.toList());
             item.setMyVote(userIds.contains(userId));
-        });
+            item.setWeight((float) (Math.round((float) userIds.size() / totalVotes * 1000)) / 1000);
+        }
         result.setItemResults(itemResults);
-        int totalNum = receiveMapper.countByVoteId(gvoteId);
         result.setTotalNum(totalNum);
         result.setIsAdmin(result.getOwner().equals(userId));
         return result;
@@ -267,7 +272,7 @@ public class GvoteServiceImpl implements GvoteService {
      */
     @Override
     public String updateGroupId(Integer gvoteId, GroupDto groupDto) {
-        if (groupDto == null) {
+        if (groupDto == null || groupDto.getEncryptedData() == null) {
             // groupDto为空，表示从发送/接收列表中进入
             return null;
         }
@@ -283,4 +288,18 @@ public class GvoteServiceImpl implements GvoteService {
         return gvote.getGroupId();
     }
 
+    /**
+     * 获取选项的投票人
+     *
+     * @author troytan
+     * @date 2019年1月2日
+     * @param itemId
+     * @return (non-Javadoc)
+     * @see com.troytan.sixpack.service.GvoteService#getItemUsers(java.lang.Integer)
+     */
+    @Override
+    public List<UserVote> getItemUsers(Integer itemId) {
+
+        return resultMapper.listByItemId(itemId);
+    }
 }

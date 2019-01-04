@@ -9,6 +9,7 @@ spring:
     max-request-size: 1Mb
   cache:
     cache-names: session
+    redis.time-to-live: 12h
     
 pagehelper:
   autoDialect: true
