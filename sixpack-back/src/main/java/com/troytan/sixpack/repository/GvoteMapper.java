@@ -86,5 +86,7 @@ public interface GvoteMapper {
      */
     void updateStatusByUserAndId(@Param("userId") Integer userId, @Param("gvoteId") Integer gvoteId,
                                  @Param("status") short status);
+    
+    void updateStatusByEndtime();
 
 }

@@ -8,11 +8,13 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @MapperScan("com.troytan.sixpack.repository")
 @EnableCaching
+@EnableScheduling
 public class RestApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
