@@ -134,6 +134,6 @@
   <!-- 更新endTime到期为结束状态的投票 -->
   <update id="updateStatusByEndtime">
     update tt_gvote set STATUS=10 
-    where END_TIME <![CDATA[ < ]]>now() and status =1;
+    where END_TIME <![CDATA[ < ]]>now() and status =1
   </update>
 </mapper>
