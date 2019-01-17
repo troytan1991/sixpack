@@ -1,34 +1,9 @@
-/*
-* Copyright 2018 SAIC General Motors Corporation Ltd. All Rights Reserved.
-*
-* This software is published under the terms of the SGM Software
-* License version 1.0, a copy of which has been included with this
-* distribution in the LICENSE.txt file.
-*
-* @Project Name : itsr
-*
-* @File name : ReturnTemplate.java
-*
-* @Author : s8xriw
-*
-* @Date : 2018年7月23日
-*
-----------------------------------------------------------------------------------
-*     Date       Who       Version     Comments
-* 1. 2018年7月23日    s8xriw    1.0
-*
-*
-*
-*
-----------------------------------------------------------------------------------
-*/
-
 package com.troytan.sixpack.exception;
 
 /**
  * TODO description
  * 
- * @author s8xriw
+ * @author troytan
  * @date 2018年7月23日
  */
 

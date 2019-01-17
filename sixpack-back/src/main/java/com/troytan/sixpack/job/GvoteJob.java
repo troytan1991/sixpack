@@ -15,7 +15,7 @@ public class GvoteJob {
     /**
      * 每5min轮询一次
      */
-    @Scheduled(cron = "* */5 * * * ?")
+    @Scheduled(cron = "0 */5 * * * ?")
     public void voteFinish() {
         voteMapper.updateStatusByEndtime();
     }
